@@ -22,15 +22,20 @@ vul_ini = 'output/' # the file to initialize the abundances for ini_mix = 'vulca
 output_dir = 'output/'
 plot_dir = 'plot/'
 movie_dir = 'plot/movie/'
-out_name =  'Earth.vul' # output file name
+out_name =  'GasDwarf.vul' # output file name
 
 # ====== Setting up the elemental abundance ======
 use_solar = False # True: using the solar abundance from Table 10. K.Lodders 2009; False: using the customized elemental abundance.
 # customized elemental abundance (only read when use_solar = False)
-O_H = 1.99888E-1
-C_H = 1.58817E-1
-N_H = 8.45849E-2
-S_H = 4.15857E-2
+# O_H = 1.99888E-1
+# C_H = 1.58817E-1
+# N_H = 8.45849E-2
+# S_H = 4.15857E-2
+# He_H = 0.09692
+O_H = 6.0618E-4 #*(0.793)
+C_H = 2.7761E-4
+N_H = 8.1853E-5
+S_H = 1.3183E-5
 He_H = 0.09692
 ini_mix = 'EQ' # Options: 'EQ', 'const_mix', 'vulcan_ini', 'table' (for 'vulcan_ini, the T-P grids have to be exactly the same)
 
