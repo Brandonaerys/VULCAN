@@ -27,11 +27,11 @@ out_name =  'GasDwarf.vul' # output file name
 # ====== Setting up the elemental abundance ======
 use_solar = False # True: using the solar abundance from Table 10. K.Lodders 2009; False: using the customized elemental abundance.
 # customized elemental abundance (only read when use_solar = False)
-# O_H = 1.99888E-1
-# C_H = 1.58817E-1
-# N_H = 8.45849E-2
-# S_H = 4.15857E-2
-# He_H = 0.09692
+O_H = 1.99888E-1
+C_H = 1.58817E-1
+N_H = 8.45849E-2
+S_H = 4.15857E-2
+He_H = 0.09692
 
 ini_mix = 'EQ' # Options: 'EQ', 'const_mix', 'vulcan_ini', 'table' (for 'vulcan_ini, the T-P grids have to be exactly the same)
 
