@@ -47,7 +47,7 @@ orbit_radius = 0.1591 # planet-star distance in A.U.
 sl_angle = 58 /180.*3.14159 # the zenith angle of the star in degree (usually 58 deg for the dayside average)
 f_diurnal = 1 # to account for the diurnal average of solar flux (i.e. 0.5 for Earth; 1 for tidally-locked planets)
 scat_sp = ['H2', 'He'] # the bulk gases that contribute to Rayleigh scattering
-T_cross_sp = ['H20','SH', 'H2S'] # warning: slower start! available atm: 'CO2','H2O','NH3', 'SH','H2S','SO2', 'S2', 'COS', 'CS2'
+T_cross_sp = ['H2O','SH', 'H2S'] # warning: slower start! available atm: 'CO2','H2O','NH3', 'SH','H2S','SO2', 'S2', 'COS', 'CS2'
 
 edd = 0.5 # the Eddington coefficient
 dbin1 = 0.1  # the uniform bin width < dbin_12trans (nm)
@@ -110,12 +110,13 @@ humidity = 0.25 # only for water
 r_p = {'H2O_l_s': 0.01, 'H2SO4_l': 1e-4}  # particle radius in cm (1e-4 = 1 micron)
 rho_p = {'H2O_l_s': 0.9, 'H2SO4_l': 1.8302} # particle density in g cm^-3
 start_conden_time = 0
+stop_conden_time = 1e18 #CUSTOM__added to fix error in op.py
 condense_sp = ["H2O" , "H2SO4"]
 non_gas_sp = [ 'H2O_l_s', "H2SO4_l"]
 fix_species = ['H2O','H2O_l_s',"H2SO4","H2SO4_l"]      # fixed the condensable species after condensation-evapoation EQ has reached
 fix_species_time = 5e8 # ~20 yrs; after this time to fix the condensable species
 
-# ini cold trap patch
+#CUSTOM__ini cold trap patch
 use_ini_cold_trap = True
 
 
