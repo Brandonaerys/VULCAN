@@ -115,6 +115,11 @@ non_gas_sp = [ 'H2O_l_s', "H2SO4_l"]
 fix_species = ['H2O','H2O_l_s',"H2SO4","H2SO4_l"]      # fixed the condensable species after condensation-evapoation EQ has reached
 fix_species_time = 5e8 # ~20 yrs; after this time to fix the condensable species
 
+# ini cold trap patch
+use_ini_cold_trap = True
+
+
+
 # ====== steady state check ======
 st_factor = 0.5
 conv_step = 500
