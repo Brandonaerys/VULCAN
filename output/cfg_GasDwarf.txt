@@ -74,13 +74,13 @@ P_t = 5e-2 # pressure at the top (dyne/cm^2)
 use_Kzz = True
 use_moldiff = True
 use_vz = False
-atm_type = 'file'  # Options: 'isothermal', 'analytical', 'file', or 'vulcan_ini' 'table'
+atm_type = 'isothermal'  # Options: 'isothermal', 'analytical', 'file', or 'vulcan_ini' 'table'
 Kzz_prof = 'file' # Options: 'const','file' or 'Pfunc' (Kzz increased with P^-0.4)
 K_max = 1e5        # for Kzz_prof = 'Pfunc'
 K_p_lev = 0.1      # for Kzz_prof = 'Pfunc'
 vz_prof = 'const'  # Options: 'const' or 'file'
 gs = 980.         # surface gravity (cm/s^2)  (HD189:2140  HD209:936)
-Tiso = 1000 # only read when atm_type = 'isothermal'
+Tiso = 800.0 # only read when atm_type = 'isothermal'
 # setting the parameters for the analytical T-P from (126)in Heng et al. 2014. Only reads when atm_type = 'analytical'
 # T_int, T_irr, ka_L, ka_S, beta_S, beta_L
 para_warm = [120., 1500., 0.1, 0.02, 1., 1.]
@@ -138,7 +138,7 @@ dt_max = runtime*1e-5
 dt_var_max = 2.
 dt_var_min = 0.5
 count_min = 120
-count_max = int(3E4)
+count_max = int(1E5)
 atol = 1.E-1 # Try decreasing this if the solutions are not stable
 mtol = 1.E-22
 mtol_conv = 1.E-16
@@ -169,7 +169,7 @@ use_PIL = True
 live_plot_frq = 10
 save_movie_rate = live_plot_frq
 y_time_freq = 1  #  storing data for every 'y_time_freq' step
-plot_spec = ['H2O', 'H2O_l_s', 'O3',  'CH4', 'NH3' ,'H2SO4','S', 'N2O']
+plot_spec = ['H2O', 'O3',  'CH4', 'NH3' ,'H2SO4','S', 'N2O']
 # output:
 output_humanread = False
 use_shark = False

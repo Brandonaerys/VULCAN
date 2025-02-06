@@ -21,6 +21,7 @@ import pickle
 if '-h' in sys.argv: use_height = True
 else: use_height = False 
 
+
 # Setting the 2nd input argument as the filename of vulcan output   
 vul_data = sys.argv[1]
 # Setting the 3rd input argument as the species names to be plotted (separated by ,)
