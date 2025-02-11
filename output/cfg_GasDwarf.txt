@@ -74,7 +74,7 @@ P_t = 5e-2 # pressure at the top (dyne/cm^2)
 use_Kzz = True
 use_moldiff = True
 use_vz = False
-atm_type = 'isothermal'  # Options: 'isothermal', 'analytical', 'file', or 'vulcan_ini' 'table'
+atm_type = 'file'  # Options: 'isothermal', 'analytical', 'file', or 'vulcan_ini' 'table'
 Kzz_prof = 'file' # Options: 'const','file' or 'Pfunc' (Kzz increased with P^-0.4)
 K_max = 1e5        # for Kzz_prof = 'Pfunc'
 K_p_lev = 0.1      # for Kzz_prof = 'Pfunc'

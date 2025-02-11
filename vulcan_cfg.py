@@ -119,7 +119,8 @@ fix_species_time = 5e8 # ~20 yrs; after this time to fix the condensable species
 #CUSTOM__ini cold trap patch
 use_ini_cold_trap = True
 
-
+# CUSTOM__ fastchemmetscale (metallicity)
+fastchem_met_scale = 20
 
 # ====== steady state check ======
 st_factor = 0.5
