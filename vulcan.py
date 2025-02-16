@@ -49,7 +49,7 @@
 # needs to be placed before numpy is imported
 # Limiting the number of threads
 import os
-os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["OMP_NUM_THREADS"] = "56"
 
 # import public modules
 import numpy as np

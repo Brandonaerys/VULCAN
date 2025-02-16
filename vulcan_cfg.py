@@ -8,7 +8,7 @@ use_lowT_limit_rates = False
 
 # ====== Setting up paths and filenames for the input and output files  ======
 # input:
-network = 'thermo/SNCHO_full_photo_network.txt'
+network = 'thermo/SNCHO_DMS_photo_network_Tsai2024.txt'
 use_lowT_limit_rates = False
 gibbs_text = 'thermo/gibbs_text.txt' # (all the nasa9 files must be placed in the folder: thermo/NASA9/)
 cross_folder = 'thermo/photo_cross/'
@@ -94,7 +94,7 @@ update_frq = 100
 # ====== Setting up the boundary conditions ======
 # Boundary Conditions:
 use_topflux = False
-use_botflux = True
+use_botflux = False
 use_fix_sp_bot = {"H2O":0.00894, "H2O_l_s":0, 'CO2':4E-4} #   0.0143 for 40% humidity 0.0033 for 20% humidity in US standard 1967 # fixed mixing ratios at the lower boundary
 diff_esc = ['H2', 'H'] # species for diffusion-limit escape at TOA
 max_flux = 1e13  # upper limit for the diffusion-limit fluxes
@@ -105,15 +105,17 @@ remove_list = [] # in pairs e.g. [1,2]
 # == Condensation ======
 use_condense = True
 use_settling = True
-use_relax = ['H2O', 'H2SO4']
+use_relax = ['H2O']
+# use_relax = ['H2O', 'H2SO4']
 humidity = 0.25 # only for water
 r_p = {'H2O_l_s': 0.01, 'H2SO4_l': 1e-4}  # particle radius in cm (1e-4 = 1 micron)
 rho_p = {'H2O_l_s': 0.9, 'H2SO4_l': 1.8302} # particle density in g cm^-3
 start_conden_time = 0
 stop_conden_time = 1e18 #CUSTOM__added to fix error in op.py
-condense_sp = ["H2O" , "H2SO4"]
-non_gas_sp = [ 'H2O_l_s', "H2SO4_l"]
-fix_species = ['H2O','H2O_l_s',"H2SO4","H2SO4_l"]      # fixed the condensable species after condensation-evapoation EQ has reached
+condense_sp = ['H2O']
+# condense_sp = ["H2O", "H2SO4"]
+non_gas_sp = ['H2O_l_s'] #  , "H2SO4_l"]
+fix_species = ['H2O','H2O_l_s'] #  ,"H2SO4","H2SO4_l"]      # fixed the condensable species after condensation-evapoation EQ has reached
 fix_species_time = 5e8 # ~20 yrs; after this time to fix the condensable species
 
 #CUSTOM__ini cold trap patch
@@ -139,7 +141,7 @@ dt_max = runtime*1e-5
 dt_var_max = 2.
 dt_var_min = 0.5
 count_min = 120
-count_max = int(1E5)
+count_max = int(1E6)
 atol = 1.E-1 # Try decreasing this if the solutions are not stable
 mtol = 1.E-22
 mtol_conv = 1.E-16
@@ -159,7 +161,7 @@ post_conden_rtol = 0.2 # switched to this value after fix_species_time
 # ====== Setting up for ouwtput and plotting ======
 # plotting:
 plot_TP = False
-use_live_plot = True
+use_live_plot = False
 use_live_flux = False
 use_plot_end = False
 use_plot_evo = False
@@ -167,7 +169,7 @@ use_save_movie = False
 use_flux_movie = False
 plot_height = False
 use_PIL = True
-live_plot_frq = 10
+live_plot_frq = 500
 save_movie_rate = live_plot_frq
 y_time_freq = 1  #  storing data for every 'y_time_freq' step
 plot_spec = ['H2O', 'O3',  'CH4', 'NH3' ,'H2SO4','S', 'N2O']
