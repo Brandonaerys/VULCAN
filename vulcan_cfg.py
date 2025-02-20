@@ -156,7 +156,7 @@ flux_atol = 1. # the tol for actinc flux (# photons cm-2 s-1 nm-1)
 
 # ====== Setting up numerical parameters for Ros2 ODE solver ======
 rtol = 0.2              # relative tolerence for adjusting the stepsize
-post_conden_rtol = 0.2 # switched to this value after fix_species_time
+post_conden_rtol = 0.1 # switched to this value after fix_species_time
 
 # ====== Setting up for ouwtput and plotting ======
 # plotting:
