@@ -17,11 +17,14 @@ except ImportError:
 import os, sys
 import pickle
 
-# swtich for plot
-if '-h' in sys.argv: use_height = True
-else: use_height = False
 
-def parser(vul_data,plot_spec,plot_pressure,plot_name):
+
+# inputs: vul_data as .vul file, plot spec as single comma-separated string, pressures as list of min/max pressure, plot_name as string
+
+def parser(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,use_range=True):
+
+
+
     plot_dir = '../' + 'parser_output'
     # Checking if the plot folder exsists
     if not os.path.exists(plot_dir):
@@ -29,8 +32,8 @@ def parser(vul_data,plot_spec,plot_pressure,plot_name):
         os.mkdir(plot_dir)
 
     # taking user input species and splitting into separate strings and then converting the list to a tuple
-    plot_spec = tuple(plot_spec.split(','))
-    nspec = len(plot_spec)
+    spec = tuple(spec.split(','))
+    nspec = len(spec)
 
     # These are the "Tableau 20" colors as RGB.
     tableau20 = [(31, 119, 180),(255, 127, 14),(44, 160, 44),(214, 39, 40),(148, 103, 189),(140, 86, 75), (227, 119, 194),(127, 127, 127),(188, 189, 34),(23, 190, 207),\
@@ -43,10 +46,10 @@ def parser(vul_data,plot_spec,plot_pressure,plot_name):
         r, g, b = tableau20[i]
         tableau20[i] = (r / 255., g / 255., b / 255.)
 
-    # tex labels for plotting
-    tex_labels = {'H':'H','H2':'H$_2$','O':'O','OH':'OH','H2O':'H$_2$O','CH':'CH','C':'C','CH2':'CH$_2$','CH3':'CH$_3$','CH4':'CH$_4$','HCO':'HCO','H2CO':'H$_2$CO', 'C4H2':'C$_4$H$_2$',\
-    'C2':'C$_2$','C2H2':'C$_2$H$_2$','C2H3':'C$_2$H$_3$','C2H':'C$_2$H','CO':'CO','CO2':'CO$_2$','He':'He','O2':'O$_2$','CH3OH':'CH$_3$OH','C2H4':'C$_2$H$_4$','C2H5':'C$_2$H$_5$','C2H6':'C$_2$H$_6$','CH3O': 'CH$_3$O'\
-    ,'CH2OH':'CH$_2$OH','N2':'N$_2$','NH3':'NH$_3$', 'NO2':'NO$_2$','HCN':'HCN','NO':'NO', 'NO2':'NO$_2$' }
+    # # tex labels for plotting
+    # tex_labels = {'H':'H','H2':'H$_2$','O':'O','OH':'OH','H2O':'H$_2$O','CH':'CH','C':'C','CH2':'CH$_2$','CH3':'CH$_3$','CH4':'CH$_4$','HCO':'HCO','H2CO':'H$_2$CO', 'C4H2':'C$_4$H$_2$',\
+    # 'C2':'C$_2$','C2H2':'C$_2$H$_2$','C2H3':'C$_2$H$_3$','C2H':'C$_2$H','CO':'CO','CO2':'CO$_2$','He':'He','O2':'O$_2$','CH3OH':'CH$_3$OH','C2H4':'C$_2$H$_4$','C2H5':'C$_2$H$_5$','C2H6':'C$_2$H$_6$','CH3O': 'CH$_3$O'\
+    # ,'CH2OH':'CH$_2$OH','N2':'N$_2$','NH3':'NH$_3$', 'NO2':'NO$_2$','HCN':'HCN','NO':'NO', 'NO2':'NO$_2$' }
 
     with open(vul_data, 'rb') as handle:
       data = pickle.load(handle)
@@ -54,16 +57,27 @@ def parser(vul_data,plot_spec,plot_pressure,plot_name):
     vulcan_spec = data['variable']['species']
     pressure_array = data['atm']['pco'] / 1e6  # Convert to bar
 
-    # Find the closest pressure index
-    closest_idx = np.argmin(np.abs(pressure_array - plot_pressure))
 
-    print(f"Plotting data at closest pressure: {pressure_array[closest_idx]:.3e} bar")
+    if use_range:
+        pressure_mask = (pressure_array >= min_pressure_bar) & (pressure_array <= max_pressure_bar)
+        selected_indices = np.where(pressure_mask)[0]
+
+        if len(selected_indices) == 0:
+            print(f"Error: No data points found in the pressure range {min_pressure_bar} - {max_pressure_bar} bar.")
+            sys.exit(1)
+        print(f"Plotting data averaged over pressure range: {min_pressure_bar:.3e} - {max_pressure_bar:.3e} bar")
+    else:
+        pressure = min_pressure_bar
+        # Find the closest pressure index
+        closest_idx = np.argmin(np.abs(pressure_array - pressure))
+
+        print(f"Plotting data at closest pressure: {pressure_array[closest_idx]:.3e} bar")
 
     # Prepare data for bar chart
     mixing_ratios = []
     species_labels = []
 
-    for sp in plot_spec:
+    for sp in spec:
         if sp in vulcan_spec:
             mixing_ratios.append(data['variable']['ymix'][closest_idx, vulcan_spec.index(sp)])
             species_labels.append(sp)
@@ -94,8 +108,18 @@ def parser(vul_data,plot_spec,plot_pressure,plot_name):
 
 
 if __name__ == '__main__':
-    vul_data = sys.argv[1]
-    plot_spec = sys.argv[2]
-    plot_pressure = float(sys.argv[3])
-    plot_name = sys.argv[4]
-    parser(vul_data,plot_spec,plot_pressure,plot_name)
+    if '-r' in sys.argv:
+        use_range = True
+        vul_data = sys.argv[1]
+        spec = sys.argv[2]
+        plot_name = sys.argv[3]
+        min_pressure = float(sys.argv[4])
+        max_pressure = float(sys.argv[5])
+        parser(vul_data,spec,plot_name,min_pressure,max_pressure_bar=max_pressure,use_range=use_range)
+    else:
+        use_range = False
+        vul_data = sys.argv[1]
+        spec = sys.argv[2]
+        plot_name = sys.argv[3]
+        pressure = float(sys.argv[4])
+        parser(vul_data,spec,plot_name,pressure,use_range=use_range)
