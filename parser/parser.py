@@ -67,9 +67,9 @@ def parser(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,use_range
             sys.exit(1)
         print(f"Plotting data averaged over pressure range: {min_pressure_bar:.3e} - {max_pressure_bar:.3e} bar")
     else:
-        pressure = min_pressure_bar
         # Find the closest pressure index
-        closest_idx = np.argmin(np.abs(pressure_array - pressure))
+        closest_idx = np.argmin(np.abs(pressure_array - min_pressure_bar))
+        selected_indices = [closest_idx]
 
         print(f"Plotting data at closest pressure: {pressure_array[closest_idx]:.3e} bar")
 
@@ -79,7 +79,8 @@ def parser(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,use_range
 
     for sp in spec:
         if sp in vulcan_spec:
-            mixing_ratios.append(data['variable']['ymix'][closest_idx, vulcan_spec.index(sp)])
+            avg_ratio = np.mean(data['variable']['ymix'][selected_indices, vulcan_spec.index(sp)])
+            mixing_ratios.append(avg_ratio)
             species_labels.append(sp)
         else:
             print(f"Warning: {sp} not found in the dataset.")
@@ -89,8 +90,8 @@ def parser(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,use_range
     plt.bar(species_labels, mixing_ratios, log=True)
 
     plt.xlabel("Species")
-    plt.ylabel("Mixing Ratio")
-    plt.title(f"Mixing Ratios at {pressure_array[closest_idx]:.3e} bar")
+    plt.ylabel("Mixing Ratio" if not use_range else "Averaged Mixing Ratio")
+    plt.title(f"Mixing Ratios at {pressure_array[closest_idx]:.3e} bar" if not use_range else f"Averaged Mixing Ratios between {min_pressure_bar:.3e} - {max_pressure_bar:.3e} bar")
     plt.xticks(rotation=45, ha="right")
     plt.yscale("log")  # Log scale for better visualization
 
