@@ -1,7 +1,8 @@
 # reads .vul data and plots mixing ratios of given species at a specified pressure, or the averaged mixing ratios in a specified pressure range
 
 # sample usage:
-# python mixing_ratios.py ../output/GasDwarf.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_incomplete 1e-4 1e-1 -r
+# python mixing_ratios.py ../output/GasDwarf.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_incomplete 1e-4 1e-1
+# -s at the end for single value of pressure
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -93,7 +94,14 @@ def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,us
 
 
 if __name__ == '__main__':
-    if '-r' in sys.argv:
+    if '-s' in sys.argv:
+        use_range = False
+        vul_data = sys.argv[1]
+        spec = sys.argv[2]
+        plot_name = sys.argv[3]
+        pressure = float(sys.argv[4])
+        mixing_ratios(vul_data,spec,plot_name,pressure,use_range=use_range)
+    else:
         use_range = True
         vul_data = sys.argv[1]
         spec = sys.argv[2]
@@ -101,10 +109,3 @@ if __name__ == '__main__':
         min_pressure = float(sys.argv[4])
         max_pressure = float(sys.argv[5])
         mixing_ratios(vul_data,spec,plot_name,min_pressure,max_pressure_bar=max_pressure,use_range=use_range)
-    else:
-        use_range = False
-        vul_data = sys.argv[1]
-        spec = sys.argv[2]
-        plot_name = sys.argv[3]
-        pressure = float(sys.argv[4])
-        mixing_ratios(vul_data,spec,plot_name,pressure,use_range=use_range)

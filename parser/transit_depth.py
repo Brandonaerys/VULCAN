@@ -9,6 +9,8 @@ import matplotlib.legend as lg
 import pickle
 import os, sys
 
+from mixing_ratios import mixing_ratios
+
 # inputs: vul_data as .vul file, plot spec as single comma-separated string, pressures as list of min/max pressure, plot_name as string
 # outputs: array of species labels, array of mixing ratios
 def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,use_range=True, plot_save=True):
@@ -63,11 +65,11 @@ def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,us
 
     # Plot bar chart
     if plot_save:
-        plot_dir = '../parser_output/transit_depth'
+        plot_dir = '../parser_output/mixing_ratios'
         # Checking if the plot folder exsists
         if not os.path.exists(plot_dir):
             print( 'Directory ' , plot_dir,  " created.")
-            os.mkdir(plot_dir)
+            os.makedirs(plot_dir)
 
 
         plt.figure(figsize=(10, 6))
