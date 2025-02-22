@@ -1,4 +1,4 @@
-# reads .vul data and plots mixing ratios of given species at a specified pressure, or the averaged mixing ratios in a specified pressure range
+# reads .vul data and plots a zeroth-order transit depth via mixingratio times cross section
 
 # sample usage:
 # python mixing_ratios.py ../output/GasDwarf.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_incomplete 1e-4 1e-1 -r
