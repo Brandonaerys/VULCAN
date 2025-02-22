@@ -3,6 +3,9 @@ This script reads VULCAN output (.vul) files using pickle and plot the species v
 Plots are saved in the folder assigned in vulcan_cfg.py, with the default plot_dir = 'plot/'.
 '''
 
+
+# sample usage:
+# python mixing_ratios.py ../output/GasDwarf.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_incomplete 1e-4 1e-1 -r
 import sys
 sys.path.insert(0, '../') # including the upper level of directory for the path of modules
 
@@ -21,7 +24,7 @@ import pickle
 
 # inputs: vul_data as .vul file, plot spec as single comma-separated string, pressures as list of min/max pressure, plot_name as string
 
-def parser(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,use_range=True):
+def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,use_range=True, plot_save=True):
 
 
 
@@ -86,24 +89,27 @@ def parser(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,use_range
             print(f"Warning: {sp} not found in the dataset.")
 
     # Plot bar chart
-    plt.figure(figsize=(10, 6))
-    plt.bar(species_labels, mixing_ratios, log=True)
+    if plot_save:
+        plt.figure(figsize=(10, 6))
+        plt.bar(species_labels, mixing_ratios, log=True)
 
-    plt.xlabel("Species")
-    plt.ylabel("Mixing Ratio" if not use_range else "Averaged Mixing Ratio")
-    plt.title(f"Mixing Ratios at {pressure_array[closest_idx]:.3e} bar" if not use_range else f"Averaged Mixing Ratios between {min_pressure_bar:.3e} - {max_pressure_bar:.3e} bar")
-    plt.xticks(rotation=45, ha="right")
-    plt.yscale("log")  # Log scale for better visualization
+        plt.xlabel("Species")
+        plt.ylabel("Mixing Ratio" if not use_range else "Averaged Mixing Ratio")
+        plt.title(f"Mixing Ratios at {pressure_array[closest_idx]:.3e} bar" if not use_range else f"Averaged Mixing Ratios between {min_pressure_bar:.3e} - {max_pressure_bar:.3e} bar")
+        plt.xticks(rotation=45, ha="right")
+        plt.yscale("log")  # Log scale for better visualization
 
-    plt.tight_layout()
-    plt.savefig(os.path.join(plot_dir, plot_name + '.png'))
-    plt.savefig(os.path.join(plot_dir, plot_name + '.eps'))
+        plt.tight_layout()
+        plt.savefig(os.path.join(plot_dir, plot_name + '.png'))
+        plt.savefig(os.path.join(plot_dir, plot_name + '.eps'))
 
-    if vulcan_cfg.use_PIL:
-        Image.open(os.path.join(plot_dir, plot_name + '.png')).show()
-    else:
-        plt.show()
+        if vulcan_cfg.use_PIL:
+            Image.open(os.path.join(plot_dir, plot_name + '.png')).show()
+        else:
+            plt.show()
 
+
+        return species_labels, mixing_ratios
 
 
 
@@ -116,11 +122,11 @@ if __name__ == '__main__':
         plot_name = sys.argv[3]
         min_pressure = float(sys.argv[4])
         max_pressure = float(sys.argv[5])
-        parser(vul_data,spec,plot_name,min_pressure,max_pressure_bar=max_pressure,use_range=use_range)
+        mixing_ratios(vul_data,spec,plot_name,min_pressure,max_pressure_bar=max_pressure,use_range=use_range)
     else:
         use_range = False
         vul_data = sys.argv[1]
         spec = sys.argv[2]
         plot_name = sys.argv[3]
         pressure = float(sys.argv[4])
-        parser(vul_data,spec,plot_name,pressure,use_range=use_range)
+        mixing_ratios(vul_data,spec,plot_name,pressure,use_range=use_range)
