@@ -54,7 +54,7 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
 
 
         except FileNotFoundError:
-            print(f'{spec[i]} cross-section data not available')
+            print(f'{spec[i]} cross-section data not available at {temp}K')
         except Exception as e:
             print(f"Error for {sp}: {e}")
 
@@ -86,7 +86,7 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
         plt.savefig(os.path.join(plot_dir, plot_name + '.eps'))
 
 
-        plt.show(block=False)
+        plt.show()
 
 
         return df
