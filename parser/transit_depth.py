@@ -43,7 +43,6 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
                 label = sp
 
             filename = f'{data_dir}/{spec[i]}/{int(temp)}.csv'
-            print(filename)
             cross = pd.read_csv(filename, sep=' ', header=None, names=['wavenumber', 'cross_section'], comment='#')
             cross = cross.astype(float)
             cross['cross_section'] *= mix[i]
@@ -55,6 +54,7 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
 
         except FileNotFoundError:
             print(f'{spec[i]} cross-section data not available at {temp}K')
+            # print(f'attempted filename: {filename}')
         except Exception as e:
             print(f"Error for {sp}: {e}")
 
