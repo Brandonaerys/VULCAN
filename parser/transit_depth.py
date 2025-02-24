@@ -1,6 +1,6 @@
 # reads .vul data and plots a zeroth order of transit depth via cross-section times mixing ratio
 
-# sample usage:python transit_depth.py GasDwarf.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_incomplete 1e-4 1e-1 300
+# sample usage:python transit_depth.py GasDwarf.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_incomplete 1e-4 1e-1 300 5e3 1e4
 #
 
 import numpy as np
@@ -14,7 +14,7 @@ from mixing_ratios import mixing_ratios
 
 # inputs: vul_data as .vul file, plot spec as single comma-separated string, min pressure as float, max pressure as float, temperature as float, plot_name as string
 # outputs: array of species labels, array of mixing ratios
-def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,mixing_plot_save=False,plot_save=True):
+def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,min_wavenumber,max_wavenumber,mixing_plot_save=False,plot_save=True):
 
 
     data_dir = 'cross_section_data'
@@ -29,7 +29,9 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
 
     # wavenumbers (in cm^-1) corresponding to wavelengths of 1-10 microns
     # separation of 10 cm^-1
-    wavenumbers = np.arange(1e3, 1e4+1, 10)
+    # wavenumbers = np.arange(1e3, 1e4+1, 10)
+
+    wavenumbers = np.arange(min_wavenumber, max_wavenumber, 10)
     df = pd.DataFrame({'wavenumber': wavenumbers})
     df['wavenumber'] = df['wavenumber'].astype(float)
 
@@ -102,4 +104,6 @@ if __name__ == '__main__':
     min_pressure_bar = float(sys.argv[4])
     max_pressure_bar = float(sys.argv[5])
     temp = float(sys.argv[6])
-    transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,mixing_plot_save=False,plot_save=True)
+    min_wavenumber = float(sys.argv[7])
+    max_wavenumber = float(sys.argv[8])
+    transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,min_wavenumber,max_wavenumber,mixing_plot_save=False,plot_save=True)
