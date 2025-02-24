@@ -1,24 +1,25 @@
-# reads .vul data and plots mixing ratios of given species at a specified pressure, or the averaged mixing ratios in a specified pressure range
+# reads .vul data and plots a zeroth order of transit depth via cross-section times mixing ratio
 
-# sample usage:
-# python mixing_ratios.py ../output/GasDwarf.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_incomplete 1e-4 1e-1 -r
+# sample usage:python transit_depth.py GasDwarf.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_incomplete 1e-4 1e-1 300
+#
 
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.legend as lg
 import pickle
 import os, sys
+import pandas as pd
 
 from mixing_ratios import mixing_ratios
 
-# inputs: vul_data as .vul file, plot spec as single comma-separated string, pressures as list of min/max pressure, plot_name as string
+# inputs: vul_data as .vul file, plot spec as single comma-separated string, min pressure as float, max pressure as float, temperature as float, plot_name as string
 # outputs: array of species labels, array of mixing ratios
-def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,use_range=True, plot_save=True):
+def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,mixing_plot_save=False,plot_save=True):
 
 
-    # taking user input species and splitting into separate strings and then converting the list to a tuple
-    spec = tuple(spec.split(','))
-    nspec = len(spec)
+    data_dir = 'cross_section_data'
+
+    spec, mix = mixing_ratios(vul_data, spec, f'{plot_name}', min_pressure_bar, max_pressure_bar=max_pressure_bar, use_range=True, plot_save=mixing_plot_save)
 
 
     # tex labels for plotting
@@ -26,62 +27,61 @@ def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,us
     'C2':'C$_2$','C2H2':'C$_2$H$_2$','C2H3':'C$_2$H$_3$','C2H':'C$_2$H','CO':'CO','CO2':'CO$_2$','He':'He','O2':'O$_2$','CH3OH':'CH$_3$OH','C2H4':'C$_2$H$_4$','C2H5':'C$_2$H$_5$','C2H6':'C$_2$H$_6$','CH3O': 'CH$_3$O'\
     ,'CH2OH':'CH$_2$OH','N2':'N$_2$','NH3':'NH$_3$', 'NO2':'NO$_2$','HCN':'HCN','NO':'NO', 'NO2':'NO$_2$', 'H2S':'H$_2$S', 'CS2':'CS$_2$'}
 
-    with open(vul_data, 'rb') as handle:
-      data = pickle.load(handle)
+    # wavenumbers (in cm^-1) corresponding to wavelengths of 1-10 microns
+    # separation of 10 cm^-1
+    wavenumbers = np.arange(1e3, 1e4+1, 10)
+    df = pd.DataFrame({'wavenumber': wavenumbers})
+    df['wavenumber'] = df['wavenumber'].astype(float)
 
-    vulcan_spec = data['variable']['species']
-    pressure_array = data['atm']['pco'] / 1e6  # Convert to bar
 
-
-    if use_range:
-        pressure_mask = (pressure_array >= min_pressure_bar) & (pressure_array <= max_pressure_bar)
-        selected_indices = np.where(pressure_mask)[0]
-
-        if len(selected_indices) == 0:
-            print(f"Error: No data points found in the pressure range {min_pressure_bar} - {max_pressure_bar} bar.")
-            sys.exit(1)
-        print(f"data averaged over pressure range: {min_pressure_bar:.3e} - {max_pressure_bar:.3e} bar")
-    else:
-        # Find the closest pressure index
-        closest_idx = np.argmin(np.abs(pressure_array - min_pressure_bar))
-        selected_indices = [closest_idx]
-
-        print(f"data at closest pressure: {pressure_array[closest_idx]:.3e} bar")
-
-    # Prepare data for bar chart
-    mixing_ratios = []
-    species_labels = []
-
-    for sp in spec:
-        if sp in vulcan_spec:
-            avg_ratio = np.mean(data['variable']['ymix'][selected_indices, vulcan_spec.index(sp)])
-            mixing_ratios.append(avg_ratio)
+    for i in range(len(spec)):
+        sp = spec[i]
+        try:
             if sp in tex_labels:
-                species_labels.append(tex_labels[sp])
+                label = tex_labels[sp]
             else:
-                species_labels.append(sp)
-        else:
-            print(f"Warning: {sp} not found in the dataset.")
+                label = sp
 
-    # Plot bar chart
+            filename = f'{data_dir}/{spec[i]}/{int(temp)}.csv'
+            print(filename)
+            cross = pd.read_csv(filename, sep=' ', header=None, names=['wavenumber', 'cross_section'], comment='#')
+            cross = cross.astype(float)
+            cross['cross_section'] *= mix[i]
+            df = df.merge(cross, on='wavenumber', how='left')
+            df.rename(columns={'cross_section': label}, inplace=True)
+
+
+
+
+        except FileNotFoundError:
+            print(f'{spec[i]} cross-section data not available')
+        except Exception as e:
+            print(f"Error for {sp}: {e}")
+
+
+
     if plot_save:
-        plot_dir = '../parser_output/mixing_ratios'
-        # Checking if the plot folder exsists
+        plot_dir = '../parser_output/transit_depths'
+
         if not os.path.exists(plot_dir):
             print( 'Directory ' , plot_dir,  " created.")
             os.makedirs(plot_dir)
 
 
         plt.figure(figsize=(10, 6))
-        plt.bar(species_labels, mixing_ratios, log=True)
 
-        plt.xlabel("Species")
-        plt.ylabel("Mixing Ratio" if not use_range else "Averaged Mixing Ratio")
-        plt.title(f"Mixing Ratios at {pressure_array[closest_idx]:.3e} bar" if not use_range else f"Averaged Mixing Ratios between {min_pressure_bar:.3e} - {max_pressure_bar:.3e} bar")
-        plt.xticks(rotation=45, ha="right")
-        plt.yscale("log")  # Log scale for better visualization
+        for column in df.columns[1:]:
+            plt.plot(df['wavenumber'], df[column], label=column, linewidth=2)
 
-        plt.tight_layout()
+        df['max_value'] = df.iloc[:, 1:].max(axis=1)
+        plt.plot(df['wavenumber'], df['max_value'], color='black', linestyle='--', linewidth=2, label='Max')
+
+        plt.xlabel('Wavenumber (cm$^{-1}$)')
+        plt.ylabel('$\sigma n$')
+        plt.title('Transit depth via mixing ratio times cross-section')
+        plt.legend()
+        plt.grid(True)
+
         plt.savefig(os.path.join(plot_dir, plot_name + '.png'))
         plt.savefig(os.path.join(plot_dir, plot_name + '.eps'))
 
@@ -89,24 +89,17 @@ def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,us
         plt.show()
 
 
-        return species_labels, mixing_ratios
+        return df
 
 
 
 
 if __name__ == '__main__':
-    if '-r' in sys.argv:
-        use_range = True
-        vul_data = sys.argv[1]
-        spec = sys.argv[2]
-        plot_name = sys.argv[3]
-        min_pressure = float(sys.argv[4])
-        max_pressure = float(sys.argv[5])
-        mixing_ratios(vul_data,spec,plot_name,min_pressure,max_pressure_bar=max_pressure,use_range=use_range)
-    else:
-        use_range = False
-        vul_data = sys.argv[1]
-        spec = sys.argv[2]
-        plot_name = sys.argv[3]
-        pressure = float(sys.argv[4])
-        mixing_ratios(vul_data,spec,plot_name,pressure,use_range=use_range)
+    use_range = True
+    vul_data = sys.argv[1]
+    spec = sys.argv[2]
+    plot_name = sys.argv[3]
+    min_pressure_bar = float(sys.argv[4])
+    max_pressure_bar = float(sys.argv[5])
+    temp = float(sys.argv[6])
+    transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,mixing_plot_save=False,plot_save=True)

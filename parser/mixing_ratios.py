@@ -1,8 +1,8 @@
 # reads .vul data and plots mixing ratios of given species at a specified pressure, or the averaged mixing ratios in a specified pressure range
 
 # sample usage:
-# python mixing_ratios.py ../output/GasDwarf.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_incomplete 1e-4 1e-1
-# -s at the end for single value of pressure
+# python mixing_ratios.py GasDwarf.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_incomplete 1e-4 1e-1
+# -s option for single value of pressure
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,7 +10,7 @@ import matplotlib.legend as lg
 import pickle
 import os, sys
 
-# inputs: vul_data as .vul file, plot spec as single comma-separated string, pressures as list of min/max pressure, plot_name as string
+# inputs: vul_data as .vul file, plot spec as single comma-separated string, min pressure as float, max pressure as float, plot_name as string
 # outputs: array of species labels, array of mixing ratios
 def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,use_range=True, plot_save=True):
 
@@ -25,7 +25,8 @@ def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,us
     'C2':'C$_2$','C2H2':'C$_2$H$_2$','C2H3':'C$_2$H$_3$','C2H':'C$_2$H','CO':'CO','CO2':'CO$_2$','He':'He','O2':'O$_2$','CH3OH':'CH$_3$OH','C2H4':'C$_2$H$_4$','C2H5':'C$_2$H$_5$','C2H6':'C$_2$H$_6$','CH3O': 'CH$_3$O'\
     ,'CH2OH':'CH$_2$OH','N2':'N$_2$','NH3':'NH$_3$', 'NO2':'NO$_2$','HCN':'HCN','NO':'NO', 'NO2':'NO$_2$', 'H2S':'H$_2$S', 'CS2':'CS$_2$'}
 
-    with open(vul_data, 'rb') as handle:
+    vul_file = f'../output/{vul_data}'
+    with open(vul_file, 'rb') as handle:
       data = pickle.load(handle)
 
     vulcan_spec = data['variable']['species']
@@ -63,6 +64,18 @@ def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,us
             print(f"Warning: {sp} not found in the dataset.")
 
     # Plot bar chart
+
+
+    plt.figure(figsize=(10, 6))
+    plt.bar(species_labels, mixing_ratios, log=True)
+
+    plt.xlabel("Species")
+    plt.ylabel("Mixing Ratio" if not use_range else "Averaged Mixing Ratio")
+    plt.title(f"Mixing Ratios at {pressure_array[closest_idx]:.3e} bar" if not use_range else f"Averaged Mixing Ratios between {min_pressure_bar:.3e} - {max_pressure_bar:.3e} bar")
+    plt.xticks(rotation=45, ha="right")
+    plt.yscale("log")  # Log scale for better visualization
+
+    plt.tight_layout()
     if plot_save:
         plot_dir = '../parser_output/mixing_ratios'
         # Checking if the plot folder exsists
@@ -70,25 +83,14 @@ def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,us
             print( 'Directory ' , plot_dir,  " created.")
             os.makedirs(plot_dir)
 
-
-        plt.figure(figsize=(10, 6))
-        plt.bar(species_labels, mixing_ratios, log=True)
-
-        plt.xlabel("Species")
-        plt.ylabel("Mixing Ratio" if not use_range else "Averaged Mixing Ratio")
-        plt.title(f"Mixing Ratios at {pressure_array[closest_idx]:.3e} bar" if not use_range else f"Averaged Mixing Ratios between {min_pressure_bar:.3e} - {max_pressure_bar:.3e} bar")
-        plt.xticks(rotation=45, ha="right")
-        plt.yscale("log")  # Log scale for better visualization
-
-        plt.tight_layout()
         plt.savefig(os.path.join(plot_dir, plot_name + '.png'))
         plt.savefig(os.path.join(plot_dir, plot_name + '.eps'))
 
 
-        plt.show()
+    plt.show()
 
 
-        return species_labels, mixing_ratios
+    return spec, mixing_ratios
 
 
 
@@ -96,16 +98,16 @@ def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,us
 if __name__ == '__main__':
     if '-s' in sys.argv:
         use_range = False
-        vul_data = sys.argv[1]
-        spec = sys.argv[2]
-        plot_name = sys.argv[3]
-        pressure = float(sys.argv[4])
+        vul_data = sys.argv[2]
+        spec = sys.argv[3]
+        plot_name = sys.argv[4]
+        pressure = float(sys.argv[5])
         mixing_ratios(vul_data,spec,plot_name,pressure,use_range=use_range)
     else:
         use_range = True
         vul_data = sys.argv[1]
         spec = sys.argv[2]
         plot_name = sys.argv[3]
-        min_pressure = float(sys.argv[4])
-        max_pressure = float(sys.argv[5])
-        mixing_ratios(vul_data,spec,plot_name,min_pressure,max_pressure_bar=max_pressure,use_range=use_range)
+        min_pressure_bar = float(sys.argv[4])
+        max_pressure_bar = float(sys.argv[5])
+        mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=max_pressure_bar,use_range=use_range)
