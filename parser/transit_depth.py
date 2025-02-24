@@ -71,10 +71,10 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
         plt.figure(figsize=(10, 6))
 
         for column in df.columns[1:]:
-            plt.plot(df['wavenumber'], df[column], label=column, linewidth=2)
+            plt.plot(df['wavenumber'], df[column], label=column, linewidth=1)
 
         df['max_value'] = df.iloc[:, 1:].max(axis=1)
-        plt.plot(df['wavenumber'], df['max_value'], color='black', linestyle='--', linewidth=2, label='Max')
+        # plt.plot(df['wavenumber'], df['max_value'], color='black', linestyle='--', linewidth=1, label='Max')
 
         plt.xlabel('Wavenumber (cm$^{-1}$)')
         plt.ylabel('$\sigma n$')
@@ -86,7 +86,7 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
         plt.savefig(os.path.join(plot_dir, plot_name + '.eps'))
 
 
-        plt.show()
+        plt.show(block=False)
 
 
         return df
