@@ -490,4 +490,4 @@
 
 
 # condensation
-1075 [  H2O -> H2O_l_s                    ]
+879  [  H2O -> H2O_l_s                    ]
