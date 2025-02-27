@@ -87,7 +87,7 @@ def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,us
         plt.savefig(os.path.join(plot_dir, plot_name + '.eps'))
 
 
-    plt.show()
+    plt.show(block=False)
 
 
     return spec, mixing_ratios

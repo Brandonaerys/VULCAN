@@ -1,6 +1,6 @@
 # reads .vul data and plots a zeroth order of transit depth via cross-section times mixing ratio
 
-# sample usage:python transit_depth.py GasDwarf.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_incomplete 1e-4 1e-1 300 5e3 1e4
+# sample usage:python transit_depth.py GasDwarf.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_incomplete 1e-4 1e-1 300 2e3 1e4
 #
 
 import numpy as np
@@ -14,7 +14,7 @@ from mixing_ratios import mixing_ratios
 
 # inputs: vul_data as .vul file, plot spec as single comma-separated string, min pressure as float, max pressure as float, temperature as float, plot_name as string
 # outputs: array of species labels, array of mixing ratios
-def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,min_wavenumber,max_wavenumber,mixing_plot_save=False,plot_save=True):
+def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,min_wavenumber,max_wavenumber,mixing_plot_save=False,plot_save=True,log=True):
 
 
     data_dir = 'cross_section_data'
@@ -48,8 +48,13 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
             cross = pd.read_csv(filename, sep=' ', header=None, names=['wavenumber', 'cross_section'], comment='#')
             cross = cross.astype(float)
             cross['cross_section'] *= mix[i]
-            df = df.merge(cross, on='wavenumber', how='left')
-            df.rename(columns={'cross_section': label}, inplace=True)
+            if log:
+                cross['cross_section'] = np.log(cross['cross_section'])
+                df = df.merge(cross, on='wavenumber', how='left')
+                df.rename(columns={'cross_section': label}, inplace=True)
+            else:
+                df = df.merge(cross, on='wavenumber', how='left')
+                df.rename(columns={'cross_section': label}, inplace=True)
 
 
 
@@ -72,14 +77,24 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
 
         plt.figure(figsize=(10, 6))
 
+        # plot wavelength in microns instead of wavenumber
+        df['wavenumber'] = 10000/df['wavenumber']
+        df.rename(columns={'cross_section': label}, inplace=True)
+
+
         for column in df.columns[1:]:
             plt.plot(df['wavenumber'], df[column], label=column, linewidth=1)
 
         df['max_value'] = df.iloc[:, 1:].max(axis=1)
         # plt.plot(df['wavenumber'], df['max_value'], color='black', linestyle='--', linewidth=1, label='Max')
 
-        plt.xlabel('Wavenumber (cm$^{-1}$)')
-        plt.ylabel('$\sigma n$')
+
+        # plt.xlabel('Wavenumber (cm$^{-1}$)')
+        plt.xlabel('Wavelength (microns)')
+
+
+        # plt.ylabel('$\sigma n$')
+        plt.ylabel('$log (\sigma n)$')
         plt.title('Transit depth via mixing ratio times cross-section')
         plt.legend()
         plt.grid(True)
@@ -106,4 +121,4 @@ if __name__ == '__main__':
     temp = float(sys.argv[6])
     min_wavenumber = float(sys.argv[7])
     max_wavenumber = float(sys.argv[8])
-    transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,min_wavenumber,max_wavenumber,mixing_plot_save=False,plot_save=True)
+    transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,min_wavenumber,max_wavenumber,mixing_plot_save=False,plot_save=True,log=True)
