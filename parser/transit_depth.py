@@ -92,9 +92,10 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
         # plt.xlabel('Wavenumber (cm$^{-1}$)')
         plt.xlabel('Wavelength (microns)')
 
-
-        # plt.ylabel('$\sigma n$')
-        plt.ylabel('$log (\sigma n)$')
+        if log:
+            plt.ylabel('$log (\sigma n)$')
+        else:
+            plt.ylabel('$\sigma n$')
         plt.title('Transit depth via mixing ratio times cross-section')
         plt.legend()
         plt.grid(True)
@@ -121,4 +122,4 @@ if __name__ == '__main__':
     temp = float(sys.argv[6])
     min_wavenumber = float(sys.argv[7])
     max_wavenumber = float(sys.argv[8])
-    transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,min_wavenumber,max_wavenumber,mixing_plot_save=False,plot_save=True,log=True)
+    transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,min_wavenumber,max_wavenumber,mixing_plot_save=True,plot_save=True,log=True)

@@ -3,15 +3,17 @@ This script reads VULCAN output (.vul) files using pickle and plot the species v
 Plots are saved in the folder assigned in vulcan_cfg.py, with the default plot_dir = 'plot/'.
 '''
 
+
+# CUSTOM: SAMPLE USAGE: python plot_vulcan.py ../output/GasDwarf_noS.vul H2O,CH4,CO,N2,H2,CO2,NH3,HCN GasDwarf_noS
 import sys
 sys.path.insert(0, '../') # including the upper level of directory for the path of modules
 
-import numpy as np 
+import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.legend as lg
 import vulcan_cfg
 try: from PIL import Image
-except ImportError: 
+except ImportError:
     try: import Image
     except: vulcan_cfg.use_PIL = False
 import os, sys
@@ -19,14 +21,14 @@ import pickle
 
 # swtich for plot
 if '-h' in sys.argv: use_height = True
-else: use_height = False 
+else: use_height = False
 
 
-# Setting the 2nd input argument as the filename of vulcan output   
+# Setting the 2nd input argument as the filename of vulcan output
 vul_data = sys.argv[1]
 # Setting the 3rd input argument as the species names to be plotted (separated by ,)
 plot_spec = sys.argv[2]
-# Setting the 4th input argument as the output eps filename        
+# Setting the 4th input argument as the output eps filename
 plot_name = sys.argv[3]
 
 plot_dir = '../' + vulcan_cfg.plot_dir
@@ -40,15 +42,15 @@ if not os.path.exists(plot_dir):
 plot_spec = tuple(plot_spec.split(','))
 nspec = len(plot_spec)
 
-# These are the "Tableau 20" colors as RGB.    
+# These are the "Tableau 20" colors as RGB.
 tableau20 = [(31, 119, 180),(255, 127, 14),(44, 160, 44),(214, 39, 40),(148, 103, 189),(140, 86, 75), (227, 119, 194),(127, 127, 127),(188, 189, 34),(23, 190, 207),\
-(174, 199, 232),(255, 187, 120),(152, 223, 138),(255, 152, 150),(197, 176, 213),(196, 156, 148),(247, 182, 210),(199, 199, 199),(219, 219, 141),(158, 218, 229)] 
-# 
+(174, 199, 232),(255, 187, 120),(152, 223, 138),(255, 152, 150),(197, 176, 213),(196, 156, 148),(247, 182, 210),(199, 199, 199),(219, 219, 141),(158, 218, 229)]
+#
 
 
-# Scale the RGB values to the [0, 1] range, which is the format matplotlib accepts.    
-for i in range(len(tableau20)):    
-    r, g, b = tableau20[i]    
+# Scale the RGB values to the [0, 1] range, which is the format matplotlib accepts.
+for i in range(len(tableau20)):
+    r, g, b = tableau20[i]
     tableau20[i] = (r / 255., g / 255., b / 255.)
 
 # tex labels for plotting
@@ -66,30 +68,30 @@ vulcan_spec = data['variable']['species']
 for color_index,sp in enumerate(plot_spec):
     if color_index == len(tableau20): # when running out of colors
         tableau20.append(tuple(np.random.rand(3)))
-    
+
     if sp in tex_labels: sp_lab = tex_labels[sp]
-    else: sp_lab = sp  
-    
+    else: sp_lab = sp
+
     #plt.plot(data['variable']['ymix'][:,vulcan_spec.index(sp)], data['atm']['zco'][:-1]/1.e5, color=tableau20[color_index], label=sp_lab, lw=1.5)
     if use_height == False:
         plt.plot(data['variable']['ymix'][:,vulcan_spec.index(sp)], data['atm']['pco']/1.e6, color=tableau20[color_index], label=sp_lab, lw=1.5)
-    else: 
+    else:
         plt.plot(data['variable']['ymix'][:,vulcan_spec.index(sp)], data['atm']['zco'][1:]/1.e5, color=tableau20[color_index], label=sp_lab, lw=1.5)
     #plt.plot(data['variable']['y_ini'][:,vulcan_spec.index(sp)]/data['atm']['n_0'], data['atm']['pco']/1.e6, color=tableau20[color_index], ls=':', lw=1.5) # plotting the initial (equilibrium) abundances
 
 
 if use_height == False:
-    plt.gca().set_yscale('log') 
-    plt.gca().invert_yaxis() 
+    plt.gca().set_yscale('log')
+    plt.gca().invert_yaxis()
     plt.ylim((data['atm']['pco'][0]/1e6,data['atm']['pco'][-1]/1e6))
     plt.ylabel("Pressure (bar)")
 else:
-    plt.ylim((data['atm']['zmco'][0]/1e5,data['atm']['zmco'][-1]/1e5)) 
-    plt.xlabel("Mixing Ratio")  
-    
+    plt.ylim((data['atm']['zmco'][0]/1e5,data['atm']['zmco'][-1]/1e5))
+    plt.xlabel("Mixing Ratio")
+
 #plt.title('T1400')
-   
-plt.gca().set_xscale('log')       
+
+plt.gca().set_xscale('log')
 plt.xlim((1.E-12, 1.e-2))
 plt.legend(frameon=0, prop={'size':12}, loc='best')
 # handles, labels = plt.gca().get_legend_handles_labels()
@@ -106,4 +108,3 @@ if vulcan_cfg.use_PIL == True:
     plot = Image.open(plot_dir + plot_name + '.png')
     plot.show()
 else: plt.show()
-
