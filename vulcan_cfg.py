@@ -3,13 +3,12 @@
 # =============================================================================
 
 # ====== Setting up the elements included in the network ======
-atom_list = ['H', 'O', 'C', 'N']
+atom_list = ['H', 'O', 'C', 'N', 'S']
 use_lowT_limit_rates = False
 
 # ====== Setting up paths and filenames for the input and output files  ======
 # input:
-# network = 'thermo/SNCHO_DMS_photo_network_Tsai2024.txt'
-network = 'thermo/NCHO_photo_network.txt'
+network = 'thermo/SNCHO_DMS_photo_network_Tsai2024.txt'
 use_lowT_limit_rates = False
 gibbs_text = 'thermo/gibbs_text.txt' # (all the nasa9 files must be placed in the folder: thermo/NASA9/)
 cross_folder = 'thermo/photo_cross/'
@@ -22,8 +21,8 @@ vul_ini = 'output/' # the file to initialize the abundances for ini_mix = 'vulca
 # output:
 output_dir = 'output/'
 plot_dir = 'plot/'
-movie_dir = 'plot/movie/GasDwarf_noS/'
-out_name =  'GasDwarf_noS.vul' # output file name
+movie_dir = 'plot/movie/'
+out_name =  'GasDwarf.vul' # output file name
 
 # ====== Setting up the elemental abundance ======
 use_solar = False # True: using the solar abundance from Table 10. K.Lodders 2009; False: using the customized elemental abundance.
@@ -31,13 +30,13 @@ use_solar = False # True: using the solar abundance from Table 10. K.Lodders 200
 O_H = 1.99888E-1
 C_H = 1.58817E-1
 N_H = 8.45849E-2
-# S_H = 4.15857E-2
+S_H = 4.15857E-2
 He_H = 0.09692
 
 ini_mix = 'EQ' # Options: 'EQ', 'const_mix', 'vulcan_ini', 'table' (for 'vulcan_ini, the T-P grids have to be exactly the same)
 
 # Initialsing uniform (constant with pressure) mixing ratios (only reads when ini_mix = const_mix)
-# const_mix = {'N2':0.78, 'O2':0.20, 'H2O':1e-6,  'CO2':4E-4, 'Ar':9.34e-3, 'SO2': 2e-10}
+const_mix = {'N2':0.78, 'O2':0.20, 'H2O':1e-6,  'CO2':4E-4, 'Ar':9.34e-3, 'SO2': 2e-10}
 
 # ====== Setting up photochemistry ======
 use_photo = True
@@ -48,7 +47,7 @@ orbit_radius = 0.1591 # planet-star distance in A.U.
 sl_angle = 58 /180.*3.14159 # the zenith angle of the star in degree (usually 58 deg for the dayside average)
 f_diurnal = 1 # to account for the diurnal average of solar flux (i.e. 0.5 for Earth; 1 for tidally-locked planets)
 scat_sp = ['H2', 'He'] # the bulk gases that contribute to Rayleigh scattering
-T_cross_sp = ['H2O'] # warning: slower start! available atm: 'CO2','H2O','NH3', 'SH','H2S','SO2', 'S2', 'COS', 'CS2'
+T_cross_sp = ['H2O','SH', 'H2S'] # warning: slower start! available atm: 'CO2','H2O','NH3', 'SH','H2S','SO2', 'S2', 'COS', 'CS2'
 
 edd = 0.5 # the Eddington coefficient
 dbin1 = 0.1  # the uniform bin width < dbin_12trans (nm)
@@ -109,8 +108,8 @@ use_settling = True
 use_relax = ['H2O']
 # use_relax = ['H2O', 'H2SO4']
 humidity = 0.25 # only for water
-r_p = {'H2O_l_s': 0.01}  # particle radius in cm (1e-4 = 1 micron)
-rho_p = {'H2O_l_s': 0.9} # particle density in g cm^-3
+r_p = {'H2O_l_s': 0.01, 'H2SO4_l': 1e-4}  # particle radius in cm (1e-4 = 1 micron)
+rho_p = {'H2O_l_s': 0.9, 'H2SO4_l': 1.8302} # particle density in g cm^-3
 start_conden_time = 0
 stop_conden_time = 1e18 #CUSTOM__added to fix error in op.py
 condense_sp = ['H2O']
@@ -119,7 +118,7 @@ non_gas_sp = ['H2O_l_s'] #  , "H2SO4_l"]
 fix_species = ['H2O','H2O_l_s'] #  ,"H2SO4","H2SO4_l"]      # fixed the condensable species after condensation-evapoation EQ has reached
 fix_species_time = 5e8 # ~20 yrs; after this time to fix the condensable species
 
-# CUSTOM__ini cold trap patch
+#CUSTOM__ini cold trap patch
 use_ini_cold_trap = True
 
 # CUSTOM__ fastchemmetscale (metallicity)
