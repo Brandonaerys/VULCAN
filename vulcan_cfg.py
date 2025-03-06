@@ -107,15 +107,15 @@ remove_list = [] # in pairs e.g. [1,2]
 
 # == Condensation ======
 use_condense = True
-use_relax = ["H2O" , "NH3"]
+use_relax = ["H2O"] # , "NH3"]
 use_settling = True
 start_conden_time = 0
-condense_sp = ["H2O" , "NH3"]
+condense_sp = ["H2O"]# , "NH3"]
 non_gas_sp = ['H2O_l_s'] # , 'NH3_l_s']
 r_p = {'H2O_l_s': 5e-5} #, 'NH3_l_s': 5e-5}
 rho_p = {'H2O_l_s': 0.9} #, 'NH3_l_s': 0.7}
 humidity = 1. # for water on Earth only
-fix_species = ["H2O" , "NH3", 'H2O_l_s'] #, 'NH3_l_s']      # fixed the condensable species after condensation-evapoation EQ has reached
+fix_species = ["H2O" ,'H2O_l_s'] #,  "NH3", 'NH3_l_s']      # fixed the condensable species after condensation-evapoation EQ has reached
 fix_species_time = 1e9 # after this time to fix the condensable species
 
 # CUSTOM patch for error in op.py
