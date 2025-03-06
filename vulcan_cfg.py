@@ -118,6 +118,9 @@ humidity = 1. # for water on Earth only
 fix_species = ["H2O" , "NH3", 'H2O_l_s'] #, 'NH3_l_s']      # fixed the condensable species after condensation-evapoation EQ has reached
 fix_species_time = 1e9 # after this time to fix the condensable species
 
+# CUSTOM patch for error in op.py
+stop_conden_time = 1e18
+
 #CUSTOM__ini cold trap patch
 use_ini_cold_trap = True
 
