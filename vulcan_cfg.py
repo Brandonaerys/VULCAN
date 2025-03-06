@@ -111,11 +111,11 @@ use_relax = ["H2O" , "NH3"]
 use_settling = True
 start_conden_time = 0
 condense_sp = ["H2O" , "NH3"]
-non_gas_sp = ['H2O_l_s', 'NH3_l_s']
-r_p = {'H2O_l_s': 5e-5, 'NH3_l_s': 5e-5}
-rho_p = {'H2O_l_s': 0.9, 'NH3_l_s': 0.7}
+non_gas_sp = ['H2O_l_s'] # , 'NH3_l_s']
+r_p = {'H2O_l_s': 5e-5} #, 'NH3_l_s': 5e-5}
+rho_p = {'H2O_l_s': 0.9} #, 'NH3_l_s': 0.7}
 humidity = 1. # for water on Earth only
-fix_species = ["H2O" , "NH3", 'H2O_l_s', 'NH3_l_s']      # fixed the condensable species after condensation-evapoation EQ has reached
+fix_species = ["H2O" , "NH3", 'H2O_l_s'] #, 'NH3_l_s']      # fixed the condensable species after condensation-evapoation EQ has reached
 fix_species_time = 1e9 # after this time to fix the condensable species
 
 #CUSTOM__ini cold trap patch
@@ -173,7 +173,7 @@ use_PIL = True
 live_plot_frq = 500
 save_movie_rate = live_plot_frq
 y_time_freq = 1  #  storing data for every 'y_time_freq' step
-plot_spec = ['H2', 'H2O', 'H2O_l_s', 'CH4', 'CO', 'C2H2', 'NH3', 'NH3_l_s' ]
+plot_spec = ['H2', 'H2O', 'H2O_l_s', 'CH4', 'CO', 'C2H2', 'NH3']
 # output:
 output_humanread = False
 use_shark = False
