@@ -3,7 +3,7 @@
 # =============================================================================
 
 # ====== Setting up the elements included in the network ======
-atom_list = ['H', 'O', 'C', 'N']
+atom_list = ['H', 'O', 'C', 'N', 'S']
 use_lowT_limit_rates = True
 
 # ====== Setting up paths and filenames for the input and output files  ======
