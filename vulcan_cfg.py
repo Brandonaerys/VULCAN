@@ -3,12 +3,12 @@
 # =============================================================================
 
 # ====== Setting up the elements included in the network ======
-atom_list = ['H', 'O', 'C', 'N']
+atom_list = ['H', 'O', 'C', 'N', 'S']
 use_lowT_limit_rates = True
 
 # ====== Setting up paths and filenames for the input and output files  ======
 # input:
-network = 'thermo/NCHO_photo_network.txt'
+network = 'thermo/SNCHO_DMS_photo_network_Tsai2024.txt'
 gibbs_text = 'thermo/gibbs_text.txt' # (all the nasa9 files must be placed in the folder: thermo/NASA9/)
 cross_folder = 'thermo/photo_cross/'
 com_file = 'thermo/all_compose.txt'
@@ -21,7 +21,7 @@ vul_ini = 'output/' # the file to initialize the abundances for ini_mix = 'vulca
 output_dir = 'output/'
 plot_dir = 'plot/'
 movie_dir = 'plot/movie/'
-out_name =  'GasDwarf_noS.vul' # output file name
+out_name =  'GasDwarf_DMS.vul' # output file name
 
 
 zero_above_conden = True
@@ -33,7 +33,7 @@ use_solar = False # True: using the solar abundance from Table 10. K.Lodders 200
 O_H = 1.99888E-1
 C_H = 1.58817E-1
 N_H = 8.45849E-2
-# S_H = 4.15857E-2
+S_H = 4.15857E-2
 He_H = 0.09692
 
 ini_mix = 'EQ' # Options: 'EQ', 'const_mix', 'vulcan_ini', 'table' (for 'vulcan_ini, the T-P grids have to be exactly the same)
@@ -145,7 +145,7 @@ dt_max = runtime*1e-5
 dt_var_max = 2.
 dt_var_min = 0.5
 count_min = 120
-count_max = int(3E4)
+count_max = int(1e6)
 atol = 1.E-1 # Try decreasing this if the solutions are not stable
 mtol = 1.E-18
 mtol_conv = 1.E-16
@@ -176,7 +176,7 @@ use_PIL = True
 live_plot_frq = 500
 save_movie_rate = live_plot_frq
 y_time_freq = 1  #  storing data for every 'y_time_freq' step
-plot_spec = ['H2', 'H2O', 'H2O_l_s', 'CH4', 'CO', 'NH3']
+plot_spec = ['H2', 'H2O', 'H2O_l_s', 'CH4', 'CO', 'C2H2', 'NH3']
 # output:
 output_humanread = False
 use_shark = False
