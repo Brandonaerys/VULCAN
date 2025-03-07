@@ -8,7 +8,7 @@ use_lowT_limit_rates = True
 
 # ====== Setting up paths and filenames for the input and output files  ======
 # input:
-network = 'thermo\SNCHO_photo_network_2024.txt'
+network = 'thermo/SNCHO_photo_network_2024.txt'
 gibbs_text = 'thermo/gibbs_text.txt' # (all the nasa9 files must be placed in the folder: thermo/NASA9/)
 cross_folder = 'thermo/photo_cross/'
 com_file = 'thermo/all_compose.txt'
