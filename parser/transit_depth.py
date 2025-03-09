@@ -1,6 +1,6 @@
 # reads .vul data and plots a zeroth order of transit depth via cross-section times mixing ratio
 
-# sample usage:python transit_depth.py GasDwarf.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_incomplete 1e-4 1e-1 300 2e3 1e4
+# sample usage:python transit_depth.py GasDwarf_DMS.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_DMS 1e-4 1e-1 300 2e3 1e4
 #
 
 import numpy as np
