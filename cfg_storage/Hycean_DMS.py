@@ -50,8 +50,8 @@ use_solar = False # True: using the solar abundance from Table 10. K.Lodders 200
 # Fe  7.5151
 # e-  0
 # abundances defined via metallicity and C/O ratio as in Cooke 2024
-metallicity = 30
-C_O_ratio = 3
+metallicity = 100
+C_O_ratio = 2
 
 O_H = metallicity*10**(8.7826-12)
 N_H = metallicity*10**(7.9130-12)
