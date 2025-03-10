@@ -32,8 +32,6 @@ def modify_data(input_filename, output_filename):
         lines = infile.readlines()
 
         # Write header
-        outfile.write('# PT profile from Leconte 2024 (https://arxiv.org/pdf/2401.06608)\n')
-        outfile.write('# Kzz profile from Rigby 2024\n')
         outfile.write("#(dyne/cm2)\t(K)\t(cm2/s)\n")
         outfile.write('Pressure\tTemp\tKzz\n')
 
@@ -48,7 +46,7 @@ def modify_data(input_filename, output_filename):
             kzz = kzz_profile(pressure)
 
 
-            outfile.write(f"{pressure:.3E}\t{temp:.3E}\t{kzz:.3E}\n")
+            outfile.write(f"{pressure:E}\t{temp:E}\t{kzz:E}\n")
 
 if __name__ == "__main__":
     input_filename = "Leconte_base_data.txt"
