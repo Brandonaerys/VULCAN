@@ -29,6 +29,7 @@ zero_above_conden = True
 # ====== Setting up the elemental abundance ======
 use_solar = False # True: using the solar abundance from Table 10. K.Lodders 2009; False: using the customized elemental abundance.
 # customized elemental abundance (only read when use_solar = False)
+
 # using built-in solar abundances from VULCAN as in K. Lodders 2009
 # C   8.4434
 # H   12.00
@@ -49,15 +50,15 @@ use_solar = False # True: using the solar abundance from Table 10. K.Lodders 200
 # Fe  7.5151
 # e-  0
 # abundances defined via metallicity and C/O ratio as in Cooke 2024
-metallicity = 5
+metallicity = 30
 C_O_ratio = 3
 
-O_H = 1.99888E-1
-N_H = 8.45849E-2
-S_H = 4.15857E-2
-He_H = 0.09692
+O_H = metallicity*10**(8.7826-12)
+N_H = metallicity*10**(7.9130-12)
+S_H = metallicity*10**(7.12-12)
+He_H = metallicity*10**(8.7826-12)
 
-C_H = 1.58817E-1
+C_H = O_H * C_O_ratio
 
 ini_mix = 'EQ' # Options: 'EQ', 'const_mix', 'vulcan_ini', 'table' (for 'vulcan_ini, the T-P grids have to be exactly the same)
 
