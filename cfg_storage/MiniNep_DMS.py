@@ -29,12 +29,36 @@ zero_above_conden = True
 # ====== Setting up the elemental abundance ======
 use_solar = False # True: using the solar abundance from Table 10. K.Lodders 2009; False: using the customized elemental abundance.
 # customized elemental abundance (only read when use_solar = False)
-# as in rigby et al 2024
-O_H = 1.99888E-1
-C_H = 1.58817E-1
-N_H = 8.45849E-2
-S_H = 4.15857E-2
-He_H = 0.09692
+
+# using built-in solar abundances from VULCAN as in K. Lodders 2009
+# C   8.4434
+# H   12.00
+# He  10.9864
+# N   7.9130
+# O   8.7826
+# P   5.5058
+# S   7.12
+# Si  7.5867
+# Ti  4.9794
+# V   4.0437
+# Cl  5.3002
+# K   5.1619
+# Na  6.3479
+# Mg  7.5995
+# F   4.49196
+# Ca  6.3677
+# Fe  7.5151
+# e-  0
+# abundances defined via metallicity and C/O ratio as in Cooke 2024
+metallicity = 30
+C_O_ratio = 3
+
+O_H = metallicity*10**(8.7826-12)
+N_H = metallicity*10**(7.9130-12)
+S_H = metallicity*10**(7.12-12)
+He_H = metallicity*10**(8.7826-12)
+
+C_H = O_H * C_O_ratio
 
 ini_mix = 'EQ' # Options: 'EQ', 'const_mix', 'vulcan_ini', 'table' (for 'vulcan_ini, the T-P grids have to be exactly the same)
 
@@ -72,7 +96,7 @@ if use_photo == False and use_ion == True:
 atm_base = 'H2' #Options: 'H2', 'N2', 'O2', 'CO2 -- the bulk gas of the atmosphere: changes the molecular diffsion, thermal diffusion factor, and settling velocity
 rocky = True # for the surface gravity
 nz = 150   # number of vertical layers
-P_b = 1e6  # pressure at the bottom (dyne/cm^2)
+P_b = 1e10  # pressure at the bottom (dyne/cm^2)
 P_t = 1e-5 # pressure at the top (dyne/cm^2)
 use_Kzz = True
 use_moldiff = True
