@@ -8,11 +8,11 @@ use_lowT_limit_rates = True
 
 # ====== Setting up paths and filenames for the input and output files  ======
 # input:
-network = 'thermo/SNCHO_custom_noDMS.txt'
+network = 'thermo/SNCHO_DMS_photo_network_Tsai2024.txt'
 gibbs_text = 'thermo/gibbs_text.txt' # (all the nasa9 files must be placed in the folder: thermo/NASA9/)
 cross_folder = 'thermo/photo_cross/'
 com_file = 'thermo/all_compose.txt'
-atm_file = 'atm/custom/atm_GasDwarf.txt' # TP and Kzz (optional) file
+atm_file = 'atm/custom/atm_Leconte_K218b.txt' # TP and Kzz (optional) file
 sflux_file = 'atm/stellar_flux/sflux-GJ436.txt' # This is the flux density at the stellar surface
 top_BC_flux_file = 'atm/BC_top_Jupiter.txt' # the file for the top boundary conditions
 bot_BC_flux_file = 'atm/BC_bot.txt' # the file for the lower boundary conditions
@@ -21,7 +21,7 @@ vul_ini = 'output/' # the file to initialize the abundances for ini_mix = 'vulca
 output_dir = 'output/'
 plot_dir = 'plot/'
 movie_dir = 'plot/movie/'
-out_name =  'GasDwarf_noDMS.vul' # output file name
+out_name =  'GasDwarf_DMS.vul' # output file name
 
 
 zero_above_conden = True
