@@ -48,7 +48,7 @@ def modify_data(input_filename, output_filename):
             kzz = kzz_profile(pressure)
 
 
-            outfile.write(f"{pressure:E}\t{temp:E}\t{kzz:E}\n")
+            outfile.write(f"{pressure:.3E}\t{temp:.3E}\t{kzz:.3E}\n")
 
 if __name__ == "__main__":
     input_filename = "Leconte_base_data.txt"

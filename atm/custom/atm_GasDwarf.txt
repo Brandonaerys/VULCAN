@@ -1,4 +1,4 @@
-# (dyne/cm2) (K)     (cm2/s)
+  # (dyne/cm2) (K)     (cm2/s)
 Pressure	Temp	Kzz
 1.000E-05	300	1.00E+10
 1.292E-05	300	1.00E+10
