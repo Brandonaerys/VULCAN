@@ -58,8 +58,8 @@ def generate_data(filename, min_pressure, max_pressure, pressure_levels):
     print(f"File {filename} generated successfully.")
 
 if __name__ == "__main__":
-    filename = 'atm_GasDwarf.txt'
+    filename = 'atm_MiniNep_Isotherm.txt'
     min_pressure_bar = 1e-11
-    max_pressure_bar = 1
-    pressure_levels = 100
+    max_pressure_bar = 1e5
+    pressure_levels = 200
     generate_data(filename, bartodyne(min_pressure_bar), bartodyne(max_pressure_bar), pressure_levels)
