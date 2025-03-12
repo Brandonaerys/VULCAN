@@ -12,7 +12,7 @@ network = 'thermo/NCHO_photo_network.txt'
 gibbs_text = 'thermo/gibbs_text.txt' # (all the nasa9 files must be placed in the folder: thermo/NASA9/)
 cross_folder = 'thermo/photo_cross/'
 com_file = 'thermo/all_compose.txt'
-atm_file = 'atm/custom/atm_GasDwarf.txt' # TP and Kzz (optional) file
+atm_file = 'atm/custom/atm_MiniNep_isotherm.txt' # TP and Kzz (optional) file
 sflux_file = 'atm/stellar_flux/sflux-GJ436.txt' # This is the flux density at the stellar surface
 top_BC_flux_file = 'atm/BC_top_Jupiter.txt' # the file for the top boundary conditions
 bot_BC_flux_file = 'atm/BC_bot.txt' # the file for the lower boundary conditions
@@ -21,7 +21,7 @@ vul_ini = 'output/' # the file to initialize the abundances for ini_mix = 'vulca
 output_dir = 'output/'
 plot_dir = 'plot/'
 movie_dir = 'plot/movie/'
-out_name =  'Hycean_noS.vul' # output file name
+out_name =  'MiniNep_noS_isotherm.vul' # output file name
 
 
 zero_above_conden = True
@@ -96,7 +96,7 @@ if use_photo == False and use_ion == True:
 atm_base = 'H2' #Options: 'H2', 'N2', 'O2', 'CO2 -- the bulk gas of the atmosphere: changes the molecular diffsion, thermal diffusion factor, and settling velocity
 rocky = True # for the surface gravity
 nz = 150   # number of vertical layers
-P_b = 1e6  # pressure at the bottom (dyne/cm^2)
+P_b = 1e10  # pressure at the bottom (dyne/cm^2)
 P_t = 1e-5 # pressure at the top (dyne/cm^2)
 use_Kzz = True
 use_moldiff = True
@@ -147,6 +147,9 @@ stop_conden_time = 1e18
 
 #CUSTOM__ini cold trap patch
 use_ini_cold_trap = True
+
+#CUSTOM fix species from cold trap patch
+fix_species_from_coldtrap_lev = True
 
 # CUSTOM__ fastchemmetscale (metallicity)
 fastchem_met_scale = 20
