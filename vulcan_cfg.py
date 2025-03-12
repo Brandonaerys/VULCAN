@@ -3,12 +3,12 @@
 # =============================================================================
 
 # ====== Setting up the elements included in the network ======
-atom_list = ['H', 'O', 'C', 'N', 'S']
+atom_list = ['H', 'O', 'C', 'N']
 use_lowT_limit_rates = True
 
 # ====== Setting up paths and filenames for the input and output files  ======
 # input:
-network = 'thermo/SNCHO_DMS_photo_network_Tsai2024.txt'
+network = 'thermo/NCHO_photo_network.txt'
 gibbs_text = 'thermo/gibbs_text.txt' # (all the nasa9 files must be placed in the folder: thermo/NASA9/)
 cross_folder = 'thermo/photo_cross/'
 com_file = 'thermo/all_compose.txt'
@@ -21,7 +21,7 @@ vul_ini = 'output/' # the file to initialize the abundances for ini_mix = 'vulca
 output_dir = 'output/'
 plot_dir = 'plot/'
 movie_dir = 'plot/movie/'
-out_name =  'MiniNep_DMS_isotherm.vul' # output file name
+out_name =  'MiniNep_noS_isotherm.vul' # output file name
 
 
 zero_above_conden = True
