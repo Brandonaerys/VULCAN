@@ -101,7 +101,6 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
         plt.grid(True)
 
         plt.savefig(os.path.join(plot_dir, plot_name + '.png'))
-        plt.savefig(os.path.join(plot_dir, plot_name + '.eps'))
 
 
         plt.show()

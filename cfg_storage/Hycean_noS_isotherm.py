@@ -21,7 +21,7 @@ vul_ini = 'output/' # the file to initialize the abundances for ini_mix = 'vulca
 output_dir = 'output/'
 plot_dir = 'plot/'
 movie_dir = 'plot/movie/'
-out_name =  'Hycean_noS.vul' # output file name
+out_name =  'Hycean_noS_isotherm.vul' # output file name
 
 
 zero_above_conden = True
