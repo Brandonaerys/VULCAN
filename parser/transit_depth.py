@@ -1,6 +1,6 @@
 # reads .vul data and plots a zeroth order of transit depth via cross-section times mixing ratio
 
-# sample usage:python transit_depth.py GasDwarf_DMS.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_DMS 1e-4 1e-1 300 2e3 1e4
+# sample usage:python transit_depth.py GasDwarf_DMS_isotherm.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_DMS_isotherm 1e-4 1e-1 300 2e3 1e4
 #
 
 import numpy as np
@@ -67,46 +67,51 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
 
 
 
+
+
+
+
+
+    # plot wavelength in microns instead of wavenumber
+    df['wavenumber'] = 10000/df['wavenumber']
+    df.rename(columns={'cross_section': label}, inplace=True)
+
+    plt.figure(figsize=(10, 6))
+
+    for column in df.columns[1:]:
+        plt.plot(df['wavenumber'], df[column], label=column, linewidth=1)
+
+    df['max_value'] = df.iloc[:, 1:].max(axis=1)
+    # plt.plot(df['wavenumber'], df['max_value'], color='black', linestyle='--', linewidth=1, label='Max')
+
+
+    # plt.xlabel('Wavenumber (cm$^{-1}$)')
+    plt.xlabel('Wavelength (microns)')
+
+    if log:
+        plt.ylabel('$log (\sigma n)$')
+        plt.ylim(-90,-45)
+    else:
+        plt.ylabel('$\sigma n$')
+    plt.title('Transit depth via mixing ratio times cross-section')
+    plt.legend()
+    plt.grid(True)
+
+
+
     if plot_save:
         plot_dir = '../parser_output/transit_depths'
 
         if not os.path.exists(plot_dir):
             print( 'Directory ' , plot_dir,  " created.")
             os.makedirs(plot_dir)
-
-
-        plt.figure(figsize=(10, 6))
-
-        # plot wavelength in microns instead of wavenumber
-        df['wavenumber'] = 10000/df['wavenumber']
-        df.rename(columns={'cross_section': label}, inplace=True)
-
-
-        for column in df.columns[1:]:
-            plt.plot(df['wavenumber'], df[column], label=column, linewidth=1)
-
-        df['max_value'] = df.iloc[:, 1:].max(axis=1)
-        # plt.plot(df['wavenumber'], df['max_value'], color='black', linestyle='--', linewidth=1, label='Max')
-
-
-        # plt.xlabel('Wavenumber (cm$^{-1}$)')
-        plt.xlabel('Wavelength (microns)')
-
-        if log:
-            plt.ylabel('$log (\sigma n)$')
-        else:
-            plt.ylabel('$\sigma n$')
-        plt.title('Transit depth via mixing ratio times cross-section')
-        plt.legend()
-        plt.grid(True)
-
         plt.savefig(os.path.join(plot_dir, plot_name + '.png'))
 
 
-        plt.show()
+    plt.show()
 
 
-        return df
+    return df
 
 
 
