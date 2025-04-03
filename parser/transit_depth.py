@@ -76,30 +76,35 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
     df['wavenumber'] = 10000/df['wavenumber']
     df.rename(columns={'cross_section': label}, inplace=True)
 
-    plt.figure(figsize=(10, 6))
-
-    for column in df.columns[1:]:
-        plt.plot(df['wavenumber'], df[column], label=column, linewidth=1)
-
-    df['max_value'] = df.iloc[:, 1:].max(axis=1)
-    # plt.plot(df['wavenumber'], df['max_value'], color='black', linestyle='--', linewidth=1, label='Max')
 
 
-    # plt.xlabel('Wavenumber (cm$^{-1}$)')
-    plt.xlabel('Wavelength (microns)')
 
-    if log:
-        plt.ylabel('$log (\sigma n)$')
-        plt.ylim(-90,-45)
-    else:
-        plt.ylabel('$\sigma n$')
-    plt.title('Transit depth via mixing ratio times cross-section')
-    plt.legend()
-    plt.grid(True)
 
+    # df['max_value'] = df.iloc[:, 1:].max(axis=1)
 
 
     if plot_save:
+        plt.figure(figsize=(10, 6))
+        for column in df.columns[1:]:
+            plt.plot(df['wavenumber'], df[column], label=column, linewidth=1)
+        # plt.plot(df['wavenumber'], df['max_value'], color='black', linestyle='--', linewidth=1, label='Max')
+
+
+        # plt.xlabel('Wavenumber (cm$^{-1}$)')
+        plt.xlabel('Wavelength ($\mu m$)')
+
+        if log:
+            plt.ylabel('$log (\sigma n)$')
+            plt.ylim(-90,-45)
+        else:
+            plt.ylabel('$\sigma n$')
+        plt.title('Transit depth metric')
+        plt.legend()
+        plt.grid(True)
+
+
+
+
         plot_dir = '../parser_output/transit_depths'
 
         if not os.path.exists(plot_dir):
@@ -108,7 +113,7 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
         plt.savefig(os.path.join(plot_dir, plot_name + '.png'))
 
 
-    plt.show()
+        plt.show()
 
 
     return df

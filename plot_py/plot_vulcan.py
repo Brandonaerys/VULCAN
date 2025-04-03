@@ -56,7 +56,7 @@ for i in range(len(tableau20)):
 # tex labels for plotting
 tex_labels = {'H':'H','H2':'H$_2$','O':'O','OH':'OH','H2O':'H$_2$O','CH':'CH','C':'C','CH2':'CH$_2$','CH3':'CH$_3$','CH4':'CH$_4$','HCO':'HCO','H2CO':'H$_2$CO', 'C4H2':'C$_4$H$_2$',\
 'C2':'C$_2$','C2H2':'C$_2$H$_2$','C2H3':'C$_2$H$_3$','C2H':'C$_2$H','CO':'CO','CO2':'CO$_2$','He':'He','O2':'O$_2$','CH3OH':'CH$_3$OH','C2H4':'C$_2$H$_4$','C2H5':'C$_2$H$_5$','C2H6':'C$_2$H$_6$','CH3O': 'CH$_3$O'\
-,'CH2OH':'CH$_2$OH','N2':'N$_2$','NH3':'NH$_3$', 'NO2':'NO$_2$','HCN':'HCN','NO':'NO', 'NO2':'NO$_2$' }
+,'CH2OH':'CH$_2$OH','N2':'N$_2$','NH3':'NH$_3$', 'NO2':'NO$_2$','HCN':'HCN','NO':'NO', 'NO2':'NO$_2$', 'H2S':'H$_2$S', 'CS2':'CS$_2$'}
 
 
 
@@ -85,6 +85,7 @@ if use_height == False:
     plt.gca().invert_yaxis()
     plt.ylim((data['atm']['pco'][0]/1e6,data['atm']['pco'][-1]/1e6))
     plt.ylabel("Pressure (bar)")
+    plt.xlabel("Mixing Ratio")
 else:
     plt.ylim((data['atm']['zmco'][0]/1e5,data['atm']['zmco'][-1]/1e5))
     plt.xlabel("Mixing Ratio")
@@ -92,7 +93,7 @@ else:
 #plt.title('T1400')
 
 plt.gca().set_xscale('log')
-plt.xlim((1.E-12, 1.e-2))
+plt.xlim((1.E-12, 1))
 plt.legend(frameon=0, prop={'size':12}, loc='best')
 # handles, labels = plt.gca().get_legend_handles_labels()
 # display = range(len(sp_list))
@@ -103,7 +104,6 @@ plt.legend(frameon=0, prop={'size':12}, loc='best')
 # plt.legend([Artist1,Artist2],['Equilibrium','Kinetics'], frameon=False, prop={'size':12}, loc='best')
 
 plt.savefig(plot_dir + plot_name + '.png')
-plt.savefig(plot_dir + plot_name + '.eps')
 if vulcan_cfg.use_PIL == True:
     plot = Image.open(plot_dir + plot_name + '.png')
     plot.show()

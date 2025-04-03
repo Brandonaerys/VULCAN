@@ -65,18 +65,18 @@ def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,us
 
     # Plot bar chart
 
-
-    plt.figure(figsize=(10, 6))
-    plt.bar(species_labels, mixing_ratios, log=True)
-
-    plt.xlabel("Species")
-    plt.ylabel("Mixing Ratio" if not use_range else "Averaged Mixing Ratio")
-    plt.title(f"Mixing Ratios at {pressure_array[closest_idx]:.3e} bar" if not use_range else f"Averaged Mixing Ratios between {min_pressure_bar:.3e} - {max_pressure_bar:.3e} bar")
-    plt.xticks(rotation=45, ha="right")
-    plt.yscale("log")  # Log scale for better visualization
-
-    plt.tight_layout()
     if plot_save:
+        plt.figure(figsize=(10, 6))
+        plt.bar(species_labels, mixing_ratios, log=True)
+
+        plt.xlabel("Species")
+        plt.ylabel("Mixing Ratio" if not use_range else "Averaged Mixing Ratio")
+        plt.title(f"Mixing Ratios at {pressure_array[closest_idx]:.3e} bar" if not use_range else f"Averaged Mixing Ratios between {min_pressure_bar:.3e} - {max_pressure_bar:.3e} bar")
+        plt.xticks(rotation=45, ha="right")
+        plt.yscale("log")  # Log scale for better visualization
+
+        plt.tight_layout()
+
         plot_dir = '../parser_output/mixing_ratios'
         # Checking if the plot folder exsists
         if not os.path.exists(plot_dir):
@@ -86,7 +86,7 @@ def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,us
         plt.savefig(os.path.join(plot_dir, plot_name + '.png'))
 
 
-    plt.show(block=False)
+        plt.show(block=False)
 
 
     return spec, mixing_ratios
