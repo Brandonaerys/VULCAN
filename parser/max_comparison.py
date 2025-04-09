@@ -25,7 +25,7 @@ plt.figure(figsize=(10, 6))
 
 for i in range(len(files)):
     out = transit_depth(files[i],spec,plot_name,min_pressure_bar,max_pressure_bar,temp,min_wavenumber,max_wavenumber,mixing_plot_save=False,plot_save=False,log=True)
-    plt.plot(out['wavenumber'], out['max_value'], label=labels[i])
+    plt.plot(out['wavelength'], out['max_value'], label=labels[i])
 
 plt.xlabel('Wavelength ($\mu m$)')
 plt.ylabel('$log (\sigma n)$')
