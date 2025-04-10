@@ -36,7 +36,7 @@ metallicity = 200
 C_O_ratio = 2
 
 # define file name using metallicity and C/O ratio
-out_name = f'GasDwarf_{metallicity}_{C_O_ratio}'
+out_name = f'GasDwarf_{int(metallicity)}_{int(C_O_ratio*100)}'
 
 multiplier = metallicity/50
 
