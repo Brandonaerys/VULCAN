@@ -4,7 +4,7 @@ Plots are saved in the folder assigned in vulcan_cfg.py, with the default plot_d
 '''
 
 
-# CUSTOM: SAMPLE USAGE: python plot_vulcan.py ../output/GasDwarf_noS.vul H2O,CH4,CO,N2,H2,CO2,NH3,HCN GasDwarf_noS
+# CUSTOM: SAMPLE USAGE: python plot_vulcan.py ../output/Hycean_DMS_isotherm.vul H2O,CH4,CO,N2,H2,CO2,NH3,HCN,CS2,H2S Hycean_DMS_isotherm
 import sys
 sys.path.insert(0, '../') # including the upper level of directory for the path of modules
 
