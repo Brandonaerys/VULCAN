@@ -74,19 +74,19 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
 
     # plot wavelength in microns instead of wavenumber
     df['wavenumber'] = 10000/df['wavenumber']
-    df.rename(columns={'cross_section': label}, inplace=True)
+    df.rename(columns={'wavenumber': 'wavelength'}, inplace=True)
 
 
 
 
 
-    # df['max_value'] = df.iloc[:, 1:].max(axis=1)
+    df['max_value'] = df.drop(columns='wavelength').max(axis=1)
 
 
     if plot_save:
         plt.figure(figsize=(10, 6))
         for column in df.columns[1:]:
-            plt.plot(df['wavenumber'], df[column], label=column, linewidth=1)
+            plt.plot(df['wavelength'], df[column], label=column, linewidth=1)
         # plt.plot(df['wavenumber'], df['max_value'], color='black', linestyle='--', linewidth=1, label='Max')
 
 
