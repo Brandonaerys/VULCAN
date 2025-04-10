@@ -12,7 +12,7 @@ network = 'thermo/SNCHO_DMS_photo_network_Tsai2024.txt'
 gibbs_text = 'thermo/gibbs_text.txt' # (all the nasa9 files must be placed in the folder: thermo/NASA9/)
 cross_folder = 'thermo/photo_cross/'
 com_file = 'thermo/all_compose.txt'
-atm_file = 'atm/custom/atm_Rigby_PT3.txt' # TP and Kzz (optional) file
+atm_file = 'atm/custom/atm_MiniNep_isotherm.txt' # TP and Kzz (optional) file
 sflux_file = 'atm/stellar_flux/sflux-GJ436.txt' # This is the flux density at the stellar surface
 top_BC_flux_file = 'atm/BC_top_Jupiter.txt' # the file for the top boundary conditions
 bot_BC_flux_file = 'atm/BC_bot.txt' # the file for the lower boundary conditions
@@ -21,7 +21,7 @@ vul_ini = 'output/' # the file to initialize the abundances for ini_mix = 'vulca
 output_dir = 'output/'
 plot_dir = 'plot/'
 movie_dir = 'plot/movie/'
-out_name =  'GasDwarf_DMS_Rigby_PT3.vul' # output file name
+# out_name =  'GasDwarf_DMS_isotherm.vul' # output file name
 
 
 zero_above_conden = True
@@ -29,12 +29,23 @@ zero_above_conden = True
 # ====== Setting up the elemental abundance ======
 use_solar = False # True: using the solar abundance from Table 10. K.Lodders 2009; False: using the customized elemental abundance.
 # customized elemental abundance (only read when use_solar = False)
-# as in rigby et al 2024
-O_H = 1.99888E-1
-C_H = 1.58817E-1
-N_H = 8.45849E-2
-S_H = 4.15857E-2
+# as in rigby et al 2024, PT3, 30% silicate
+# 50x solar defined
+
+metallicity = 200
+C_O_ratio = 2
+
+# define file name using metallicity and C/O ratio
+out_name = f'GasDwarf_{metallicity}_{C_O_ratio}'
+
+multiplier = metallicity/50
+
+O_H = multiplier*10**(-1.89)
+N_H = multiplier*10**(-4.86)
+S_H = multiplier*10**(-3.56)
 He_H = 0.09692
+
+C_H = O_H * C_O_ratio
 
 ini_mix = 'EQ' # Options: 'EQ', 'const_mix', 'vulcan_ini', 'table' (for 'vulcan_ini, the T-P grids have to be exactly the same)
 
