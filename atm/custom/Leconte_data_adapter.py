@@ -49,7 +49,7 @@ def modify_data(input_filename, output_filename):
             outfile.write(f"{pressure:E}\t{temp:E}\t{kzz:E}\n")
 
 if __name__ == "__main__":
-    input_filename = "Leconte_base_data.txt"
-    output_filename = "atm_Leconte_K218b.txt"
+    input_filename = "Rigby_PT3_base_data.txt"
+    output_filename = "atm_Rigby_PT3.txt"
     modify_data(input_filename, output_filename)
     print(f'{output_filename} generated')
