@@ -4,7 +4,6 @@ Plots are saved in the folder assigned in vulcan_cfg.py, with the default plot_d
 '''
 
 
-# CUSTOM: SAMPLE USAGE: python plot_vulcan.py ../output/Hycean_DMS_isotherm.vul H2O,CH4,CO,N2,H2,CO2,NH3,HCN,CS2,H2S Hycean_DMS_isotherm
 import sys
 sys.path.insert(0, '../') # including the upper level of directory for the path of modules
 
@@ -19,19 +18,20 @@ except ImportError:
 import os, sys
 import pickle
 
-# swtich for plot
-if '-h' in sys.argv: use_height = True
-else: use_height = False
+use_height = False
 
 
-# Setting the 2nd input argument as the filename of vulcan output
-vul_data = sys.argv[1]
-# Setting the 3rd input argument as the species names to be plotted (separated by ,)
-plot_spec = sys.argv[2]
-# Setting the 4th input argument as the output eps filename
-plot_name = sys.argv[3]
 
-plot_dir = '../' + vulcan_cfg.plot_dir
+# for example, Hycean_DMS_isotherm
+case = 'GasDwarf_200_25'
+
+
+
+plot_spec = 'H2O,CH4,CO,N2,H2,CO2,NH3,HCN,CS2,H2S'
+vul_data = f'../output/{case}.vul'
+plot_name = case
+
+plot_dir = '../' + 'plot/'
 # Checking if the plot folder exsists
 if not os.path.exists(plot_dir):
     print ('The plotting directory assigned in vulcan_cfg.py does not exist.')
