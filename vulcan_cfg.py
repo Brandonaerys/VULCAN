@@ -21,7 +21,7 @@ vul_ini = 'output/' # the file to initialize the abundances for ini_mix = 'vulca
 output_dir = 'output/'
 plot_dir = 'plot/'
 movie_dir = 'plot/movie/'
-out_name =  'MiniNep_DMS_isotherm.vul' # output file name
+# out_name =  'GasDwarf_DMS_isotherm.vul' # output file name
 
 
 zero_above_conden = True
@@ -29,37 +29,21 @@ zero_above_conden = True
 # ====== Setting up the elemental abundance ======
 use_solar = False # True: using the solar abundance from Table 10. K.Lodders 2009; False: using the customized elemental abundance.
 # customized elemental abundance (only read when use_solar = False)
+# as in rigby et al 2024, PT3, 30% silicate
+# 50x solar defined
 
-# using built-in solar abundances from VULCAN as in K. Lodders 2009
-# C   8.4434
-# H   12.00
-# He  10.9864
-# N   7.9130
-# O   8.7826
-# P   5.5058
-# S   7.12
-# Si  7.5867
-# Ti  4.9794
-# V   4.0437
-# Cl  5.3002
-# K   5.1619
-# Na  6.3479
-# Mg  7.5995
-# F   4.49196
-# Ca  6.3677
-# Fe  7.5151
-# e-  0
-# abundances defined via metallicity and C/O ratio as in Cooke 2024
-metallicity = 200
+metallicity = 30
 C_O_ratio = 0.25
 
 # define file name using metallicity and C/O ratio
-out_name = f'MiniNep_{int(metallicity)}_{int(C_O_ratio*100)}.vul'
+out_name = f'GasDwarf_{int(metallicity)}_{int(C_O_ratio*100)}.vul'
 
-O_H = metallicity*10**(8.7826-12)
-N_H = metallicity*10**(7.9130-12)
-S_H = metallicity*10**(7.12-12)
-He_H = metallicity*10**(8.7826-12)
+multiplier = metallicity/50
+
+O_H = multiplier*10**(-1.89)
+N_H = multiplier*10**(-4.86)
+S_H = multiplier*10**(-3.56)
+He_H = 0.09692
 
 C_H = O_H * C_O_ratio
 
@@ -99,7 +83,7 @@ if use_photo == False and use_ion == True:
 atm_base = 'H2' #Options: 'H2', 'N2', 'O2', 'CO2 -- the bulk gas of the atmosphere: changes the molecular diffsion, thermal diffusion factor, and settling velocity
 rocky = True # for the surface gravity
 nz = 150   # number of vertical layers
-P_b = 1e10  # pressure at the bottom (dyne/cm^2)
+P_b = 1e11  # pressure at the bottom (dyne/cm^2)
 P_t = 1e-5 # pressure at the top (dyne/cm^2)
 use_Kzz = True
 use_moldiff = True
@@ -150,6 +134,9 @@ stop_conden_time = 1e18
 
 #CUSTOM__ini cold trap patch
 use_ini_cold_trap = True
+
+#CUSTOM fix species from cold trap fix
+fix_species_from_coldtrap_lev = True
 
 # CUSTOM__ fastchemmetscale (metallicity)
 fastchem_met_scale = 20

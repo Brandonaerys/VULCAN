@@ -135,6 +135,9 @@ stop_conden_time = 1e18
 #CUSTOM__ini cold trap patch
 use_ini_cold_trap = True
 
+#CUSTOM fix species from cold trap fix
+fix_species_from_coldtrap_lev = True
+
 # CUSTOM__ fastchemmetscale (metallicity)
 fastchem_met_scale = 20
 
