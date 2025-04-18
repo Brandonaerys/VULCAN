@@ -32,8 +32,8 @@ use_solar = False # True: using the solar abundance from Table 10. K.Lodders 200
 # as in rigby et al 2024, PT3, 30% silicate
 # 50x solar defined
 
-metallicity = 30
-C_O_ratio = 1.75
+metallicity = 175
+C_O_ratio = 2.0
 
 # define file name using metallicity and C/O ratio
 out_name = f'GasDwarf_{int(metallicity)}_{int(C_O_ratio*100)}.vul'
