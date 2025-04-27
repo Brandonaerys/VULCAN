@@ -23,11 +23,11 @@ use_height = False
 
 
 # for example, Hycean_DMS_isotherm
-case = 'GasDwarf_200_25'
+case = 'GasDwarf_200_200'
 
 
 
-plot_spec = 'H2O,CH4,CO,N2,H2,CO2,NH3,HCN,CS2,H2S'
+plot_spec = 'H2O,CH4,CO,N2,H2,CO2,NH3,HCN,CS2,H2S,CH3SCH3'
 vul_data = f'../output/{case}.vul'
 plot_name = case
 
