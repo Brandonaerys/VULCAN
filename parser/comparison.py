@@ -142,9 +142,9 @@ def sigma_n_compare(vul_data_1,vul_data_2,log_threshold=1.0, planet1_name='Plane
 
 
 if __name__ == '__main__':
-    vul_data_1 = 'GasDwarf_DMS_isotherm.vul'
-    vul_data_2 = 'MiniNep_DMS_isotherm.vul'
-    planet1_name = 'GasDwarf'
-    planet2_name = 'Mini Neptune'
+    vul_data_1 = 'GasDwarf_30_100.vul'
+    vul_data_2 = 'GasDwarf_200_200.vul'
+    planet1_name = vul_data_1
+    planet2_name = vul_data_2
     log_threshold = 1.0
     sigma_n_compare(vul_data_1,vul_data_2,log_threshold=log_threshold, planet1_name=planet1_name, planet2_name=planet2_name, plot=True)

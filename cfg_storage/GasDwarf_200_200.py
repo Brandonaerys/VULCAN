@@ -139,7 +139,7 @@ use_ini_cold_trap = True
 fix_species_from_coldtrap_lev = True
 
 # CUSTOM__ fastchemmetscale (metallicity)
-fastchem_met_scale = 20
+fastchem_met_scale = metallicity
 
 
 # ====== steady state check ======
