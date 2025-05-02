@@ -40,7 +40,7 @@ def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,us
         if len(selected_indices) == 0:
             print(f"Error: No data points found in the pressure range {min_pressure_bar} - {max_pressure_bar} bar.")
             sys.exit(1)
-        print(f"data averaged over pressure range: {min_pressure_bar:.3e} - {max_pressure_bar:.3e} bar")
+        # print(f"data averaged over pressure range: {min_pressure_bar:.3e} - {max_pressure_bar:.3e} bar")
     else:
         # Find the closest pressure index
         closest_idx = np.argmin(np.abs(pressure_array - min_pressure_bar))
