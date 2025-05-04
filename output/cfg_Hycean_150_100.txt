@@ -153,7 +153,9 @@ stop_conden_time = 1e18
 use_ini_cold_trap = True
 
 # CUSTOM__ fastchemmetscale (metallicity)
-fastchem_met_scale = 20
+fastchem_met_scale = metallicity
+
+fix_species_from_coldtrap_lev = True
 
 
 # ====== steady state check ======
