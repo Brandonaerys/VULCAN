@@ -11,7 +11,7 @@ from transit_depth import transit_depth
 seed = 20
 
 
-spec = 'H2O,CH4,CO,CO2,NH3,H2S,HCN'
+specs = 'H2O,CH4,CO,CO2,NH3,H2S,HCN'
 plot_name = 'throwaway'
 min_pressure_bar = 1e-4
 max_pressure_bar = 1e-1
@@ -31,10 +31,9 @@ with np.errstate(divide='ignore'):
             for CO in COs:
                 vul_data_name = f'{type}_{int(met)}_{int(CO*100)}.vul'
                 try:
-                    df = transit_depth(vul_data_name,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,min_wavenumber,max_wavenumber,mixing_plot_save=False,plot_save=False,log=True)
-                    df_filtered = df_filtered = df[['wavelength', 'max_value']].copy()
+                    df = transit_depth(vul_data_name,specs,plot_name,min_pressure_bar,max_pressure_bar,temp,min_wavenumber,max_wavenumber,mixing_plot_save=False,plot_save=False,log=True)
+                    df_filtered = df[['wavelength', 'max_value']].copy()
                     df_filtered.sort_values(by='wavelength', inplace=True)
-
                     dfs.append(df_filtered[['max_value']].values.flatten())
                     labels.append(type)
                     ref_wavelengths = df_filtered[['wavelength']].sort_values(by='wavelength').values.flatten()
@@ -47,16 +46,16 @@ with np.errstate(divide='ignore'):
 X = np.array(dfs)
 y = np.array(labels)
 
-# print(len(y))
-# print(X)
-# print(y)
-# exit()
-
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=seed)
+
 
 # train
 clf = RandomForestClassifier(n_estimators=200, max_depth=10, min_samples_leaf=5, max_features='sqrt', random_state=seed)
 clf.fit(X_train, y_train)
+
+# optional add noise to test data
+gaussian_sd = 20.0
+X_test = X_test + np.random.normal(0, gaussian_sd, size=X_test.shape)
 
 # eval
 y_pred = clf.predict(X_test)
