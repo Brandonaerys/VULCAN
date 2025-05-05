@@ -50,8 +50,8 @@ use_solar = False # True: using the solar abundance from Table 10. K.Lodders 200
 # Fe  7.5151
 # e-  0
 # abundances defined via metallicity and C/O ratio as in Cooke 2024
-metallicity = 175
-C_O_ratio = 1.25
+metallicity = 150
+C_O_ratio = 0.75
 
 # define file name using metallicity and C/O ratio
 out_name = f'Hycean_{int(metallicity)}_{int(C_O_ratio*100)}.vul'
