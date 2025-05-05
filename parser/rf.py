@@ -41,6 +41,8 @@ with np.errstate(divide='ignore'):
                     pass
                     # print(vul_data_name, 'error occured,', e)
 
+# print(len(labels))
+# exit()
 
 
 X = np.array(dfs)
