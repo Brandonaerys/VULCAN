@@ -22,14 +22,18 @@ use_height = False
 
 
 
-# for example, Hycean_DMS_isotherm
-case = 'GasDwarf_200_200'
+
+type = 'MiniNep'
+met=50
+CO=0.5
+case = f'{type}_{int(met)}_{int(CO*100)}'
+
+plot_title = f'type={type}, met={met}, C/O={CO}'
 
 
-
-plot_spec = 'H2O,CH4,CO,N2,H2,CO2,NH3,HCN,CS2,H2S,CH3SCH3'
+plot_spec = 'H2O,CH4,CO,N2,H2,CO2,NH3,HCN,CS2,H2S'
 vul_data = f'../output/{case}.vul'
-plot_name = case
+plot_name = f'{case}_profile'
 
 plot_dir = '../' + 'plot/'
 # Checking if the plot folder exsists
@@ -95,6 +99,8 @@ else:
 plt.gca().set_xscale('log')
 plt.xlim((1.E-12, 1))
 plt.legend(frameon=0, prop={'size':12}, loc='best')
+
+plt.title(plot_title)
 # handles, labels = plt.gca().get_legend_handles_labels()
 # display = range(len(sp_list))
 # #Create custom artists
@@ -102,6 +108,8 @@ plt.legend(frameon=0, prop={'size':12}, loc='best')
 # Artist1 = plt.Line2D(range(10),range(10), color='black')
 # Artist2 = plt.Line2D((0,1),(0,0), color='black', ls='--',lw=1.5)
 # plt.legend([Artist1,Artist2],['Equilibrium','Kinetics'], frameon=False, prop={'size':12}, loc='best')
+
+plt.tight_layout(pad=0)
 
 plt.savefig(plot_dir + plot_name + '.png')
 if vulcan_cfg.use_PIL == True:
