@@ -50,7 +50,7 @@ with np.errstate(divide='ignore'):
 
 
 
-dfs_train, dfs_test, y_train, y_test = train_test_split(dfs, labels, test_size=0.4, random_state=seed)
+dfs_train, dfs_test, y_train, y_test = train_test_split(dfs, labels, test_size=0.4, random_state=seed, stratify=labels)
 
 X_test = []
 # just normal max for test data
@@ -61,8 +61,9 @@ for df in dfs_test:
     ref_wavelengths = df_filtered[['wavelength']].sort_values(by='wavelength').values.flatten()
 
 X_test = np.array(X_test)
+
 # optional add noise to test data
-gaussian_sd = 20.0
+gaussian_sd = 10.0
 X_test = X_test + np.random.normal(0, gaussian_sd, size=X_test.shape)
 
 

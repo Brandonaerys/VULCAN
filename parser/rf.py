@@ -48,38 +48,28 @@ print(len(labels))
 X = np.array(dfs)
 y = np.array(labels)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=seed)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=seed, stratify=y)
 
 
 # train
 clf = RandomForestClassifier(n_estimators=200, max_depth=10, min_samples_leaf=5, max_features='sqrt', random_state=seed)
 
 
-# intentionally overfit
+# intentionally overfitted classifier
 # clf = RandomForestClassifier(n_estimators=1, max_depth=None, min_samples_split=2, min_samples_leaf=1, max_features=None, bootstrap=False, random_state=seed)
 
 
 clf.fit(X_train, y_train)
 
 # optional add noise to test data
-gaussian_sd = 10.0
+gaussian_sd = 10
 X_test = X_test + np.random.normal(0, gaussian_sd, size=X_test.shape)
 
 # eval
 y_pred = clf.predict(X_test)
 print(classification_report(y_test, y_pred))
 
-# fetaure importance
-importances = clf.feature_importances_
 
-plt.figure(figsize=(10, 4))
-plt.plot(ref_wavelengths, importances, marker='o', linewidth=1)
-plt.title("Feature Importance by Wavelength")
-plt.xlabel("Wavelength")
-plt.ylabel("Importance")
-plt.grid(True)
-plt.tight_layout(pad=0)
-plt.show()
 
 # confusion matrix
 cm = confusion_matrix(y_test, y_pred, labels=clf.classes_)
@@ -89,6 +79,23 @@ disp.plot(cmap='Blues')
 plt.title("Confusion Matrix")
 plt.tight_layout(pad=0)
 plt.show()
+
+
+# fetaure importance with full model instead
+del clf
+clf = RandomForestClassifier(n_estimators=200, max_depth=10, min_samples_leaf=5, max_features='sqrt', random_state=seed)
+clf.fit(X,y)
+importances = clf.feature_importances_
+
+plt.figure(figsize=(10, 4))
+plt.plot(ref_wavelengths, importances, marker='o', linewidth=1)
+plt.title("Feature Importance by Wavelength")
+plt.xlabel('Wavelength (μm)')
+plt.ylabel("Importance")
+plt.grid(True)
+plt.tight_layout(pad=0)
+plt.show()
+
 
 # joblib save model
 joblib.dump(clf, 'random_forest_model.joblib')
