@@ -7,7 +7,7 @@ import pandas as pd
 
 from transit_depth import transit_depth
 
-def sigma_n_compare(vul_data_1,vul_data_2,log_threshold=1.0, planet1_name='Planet 1', planet2_name='Planet 2', plot=True):
+def sigma_n_compare(vul_data_1,vul_data_2, plot_save_name, log_threshold=1.0, planet1_name='Planet 1', planet2_name='Planet 2', plot=True, plot_title=None):
     # !!!defining parameters for transit_depth df - change here instead of arguments
     spec = 'H2O,CH4,CO,CO2,NH3,H2S,HCN' # ,H2' # ,CS2,N2'
     min_pressure_bar = 1e-4
@@ -133,18 +133,49 @@ def sigma_n_compare(vul_data_1,vul_data_2,log_threshold=1.0, planet1_name='Plane
 
         ax.set_xlabel("Wavelength (μm)")
         ax.set_ylabel("Transit Depth Metric (log scale)")
-        ax.set_title("Comparison of Transit Depth Metrics")
+        if not plot_title:
+            ax.set_title("Comparison of Transit Depth Metrics")
+        else:
+            ax.set_title(plot_title)
         ax.grid(True)
-        plt.tight_layout()
+        plt.tight_layout(pad=0)
+
+
+        plot_dir = '../parser_output/comparisons'
+
+        if not os.path.exists(plot_dir):
+            print( 'Directory ' , plot_dir,  " created.")
+            os.makedirs(plot_dir)
+        plt.savefig(os.path.join(plot_dir, plot_save_name + '.png'))
         plt.show()
 
     return grouped_df
 
 
 if __name__ == '__main__':
-    vul_data_1 = 'GasDwarf_30_100.vul'
-    vul_data_2 = 'GasDwarf_200_200.vul'
-    planet1_name = vul_data_1
-    planet2_name = vul_data_2
-    log_threshold = 1.0
-    sigma_n_compare(vul_data_1,vul_data_2,log_threshold=log_threshold, planet1_name=planet1_name, planet2_name=planet2_name, plot=True)
+    log_threshold = 2
+
+    type1 = 'GasDwarf'
+    met1=50
+    CO1=0.5
+
+    type2 = 'Hycean'
+    met2=50
+    CO2=0.5
+
+
+    case1 = f'{type1}_{int(met1)}_{int(CO1*100)}'
+    case2 = f'{type2}_{int(met2)}_{int(CO2*100)}'
+
+    planet1_name = f'{type1}_{met1}_{CO1}'
+    planet2_name = f'{type2}_{met2}_{CO2}'
+
+
+    vul_data1 = f'{case1}.vul'
+    vul_data2 = f'{case2}.vul'
+
+    plot_name = f'metrics_{case1}_{case2}'
+    plot_title = f'{type1}_{met1}_{CO1} vs {type2}_{met2}_{CO2}'
+
+
+    sigma_n_compare(vul_data1,vul_data2,plot_name,log_threshold=log_threshold, planet1_name=planet1_name, planet2_name=planet2_name, plot=True, plot_title=plot_title)

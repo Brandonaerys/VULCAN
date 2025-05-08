@@ -19,7 +19,7 @@ temp = 300
 min_wavenumber = 1e3
 max_wavenumber = 1e4
 
-types = ['GasDwarf', 'Hycean','miniNep']
+types = ['GasDwarf', 'Hycean','MiniNep']
 mets = [30,50,75,100,125,150,175,200]
 COs = [0.25,0.5,0.75,1.0,1.25,1.5,1.75,2.0]
 
@@ -41,7 +41,7 @@ with np.errstate(divide='ignore'):
                     pass
                     # print(vul_data_name, 'error occured,', e)
 
-# print(len(labels))
+print(len(labels))
 # exit()
 
 
@@ -53,10 +53,16 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_
 
 # train
 clf = RandomForestClassifier(n_estimators=200, max_depth=10, min_samples_leaf=5, max_features='sqrt', random_state=seed)
+
+
+# intentionally overfit
+# clf = RandomForestClassifier(n_estimators=1, max_depth=None, min_samples_split=2, min_samples_leaf=1, max_features=None, bootstrap=False, random_state=seed)
+
+
 clf.fit(X_train, y_train)
 
 # optional add noise to test data
-gaussian_sd = 20.0
+gaussian_sd = 10.0
 X_test = X_test + np.random.normal(0, gaussian_sd, size=X_test.shape)
 
 # eval
@@ -72,7 +78,7 @@ plt.title("Feature Importance by Wavelength")
 plt.xlabel("Wavelength")
 plt.ylabel("Importance")
 plt.grid(True)
-plt.tight_layout()
+plt.tight_layout(pad=0)
 plt.show()
 
 # confusion matrix
@@ -81,7 +87,7 @@ disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=clf.classes_)
 
 disp.plot(cmap='Blues')
 plt.title("Confusion Matrix")
-plt.tight_layout()
+plt.tight_layout(pad=0)
 plt.show()
 
 # joblib save model

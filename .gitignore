@@ -1,3 +1,5 @@
 *.pyc
 *__pycache__*
 *pycache*
+*.png
+__pycache__\vulcan_cfg.cpython-311.pyc

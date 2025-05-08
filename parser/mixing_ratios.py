@@ -12,7 +12,7 @@ import os, sys
 
 # inputs: vul_data as .vul file, plot spec as single comma-separated string, min pressure as float, max pressure as float, plot_name as string
 # outputs: array of species labels, array of mixing ratios
-def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,use_range=True, plot_save=True):
+def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,use_range=True, plot_save=True, plot_title=None):
 
 
     # taking user input species and splitting into separate strings and then converting the list to a tuple
@@ -70,12 +70,15 @@ def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,us
         plt.bar(species_labels, mixing_ratios, log=True)
 
         plt.xlabel("Species")
-        plt.ylabel("Mixing Ratio" if not use_range else "Averaged Mixing Ratio")
-        plt.title(f"Mixing Ratios at {pressure_array[closest_idx]:.3e} bar" if not use_range else f"Averaged Mixing Ratios between {min_pressure_bar:.3e} - {max_pressure_bar:.3e} bar")
+        plt.ylabel("Mixing Ratio" if not use_range else f"Averaged Mixing Ratios between {min_pressure_bar:.1e} - {max_pressure_bar:.1e} bar")
+        if not plot_title:
+            plt.title(f"Mixing Ratios at {pressure_array[closest_idx]:.3e} bar" if not use_range else f"Averaged Mixing Ratios between {min_pressure_bar:.3e} - {max_pressure_bar:.3e} bar")
+        else:
+            plt.title(plot_title)
         plt.xticks(rotation=45, ha="right")
         plt.yscale("log")  # Log scale for better visualization
 
-        plt.tight_layout()
+        plt.tight_layout(pad=0)
 
         plot_dir = '../parser_output/mixing_ratios'
         # Checking if the plot folder exsists
@@ -86,7 +89,7 @@ def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,us
         plt.savefig(os.path.join(plot_dir, plot_name + '.png'))
 
 
-        plt.show(block=False)
+        plt.show(block=True)
 
 
     return spec, mixing_ratios
@@ -95,18 +98,24 @@ def mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=1,us
 
 
 if __name__ == '__main__':
-    if '-s' in sys.argv:
-        use_range = False
-        vul_data = sys.argv[2]
-        spec = sys.argv[3]
-        plot_name = sys.argv[4]
-        pressure = float(sys.argv[5])
-        mixing_ratios(vul_data,spec,plot_name,pressure,use_range=use_range)
-    else:
-        use_range = True
-        vul_data = sys.argv[1]
-        spec = sys.argv[2]
-        plot_name = sys.argv[3]
-        min_pressure_bar = float(sys.argv[4])
-        max_pressure_bar = float(sys.argv[5])
-        mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=max_pressure_bar,use_range=use_range)
+
+    type = 'MiniNep'
+    met=200
+    CO=2.0
+    case = f'{type}_{int(met)}_{int(CO*100)}'
+
+    plot_title = f'type={type}, met={met}, C/O={CO}'
+
+
+    vul_data = f'{case}.vul'
+
+    plot_name = f'{case}_avgs'
+
+    spec = 'H2O,CH4,CO,CO2,NH3,H2S,HCN'
+
+
+    min_pressure_bar = 1e-4
+    max_pressure_bar = 1e-1
+
+    use_range = True
+    mixing_ratios(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar=max_pressure_bar,use_range=use_range, plot_title=plot_title)

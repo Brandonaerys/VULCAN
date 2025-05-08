@@ -1,6 +1,6 @@
 # reads .vul data and plots a zeroth order of transit depth via cross-section times mixing ratio
 
-# sample usage:python transit_depth.py GasDwarf_DMS_isotherm.vul H2O,CH4,CO,N2,H2,CO2,NH3,H2S,HCN,CS2 GasDwarf_DMS_isotherm 1e-4 1e-1 300 2e3 1e4
+
 #
 
 import numpy as np
@@ -14,7 +14,7 @@ from mixing_ratios import mixing_ratios
 
 # inputs: vul_data as .vul file, plot spec as single comma-separated string, min pressure as float, max pressure as float, temperature as float, plot_name as string
 # outputs: array of species labels, array of mixing ratios
-def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,min_wavenumber,max_wavenumber,mixing_plot_save=False,plot_save=True,log=True):
+def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,min_wavenumber,max_wavenumber,mixing_plot_save=False,plot_save=True,log=True, plot_title=None):
 
 
     data_dir = 'cross_section_data'
@@ -83,10 +83,13 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
     df['max_value'] = df.drop(columns='wavelength').max(axis=1)
 
 
+
     if plot_save:
+        wavelengths = df['wavelength']
+        df_removed = df.drop(['wavelength', 'max_value'], axis=1)
         plt.figure(figsize=(10, 6))
-        for column in df.columns[1:]:
-            plt.plot(df['wavelength'], df[column], label=column, linewidth=1)
+        for column in df_removed.columns:
+            plt.plot(wavelengths, df_removed[column], label=column, linewidth=1)
         # plt.plot(df['wavenumber'], df['max_value'], color='black', linestyle='--', linewidth=1, label='Max')
 
 
@@ -95,10 +98,15 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
 
         if log:
             plt.ylabel('$log (\sigma n)$')
-            plt.ylim(-90,-45)
+            plt.ylim(-100,-40)
         else:
             plt.ylabel('$\sigma n$')
-        plt.title('Transit depth metric')
+        if not plot_title:
+            plt.title('Transit depth metric')
+        else:
+            plt.title(plot_title)
+
+
         plt.legend()
         plt.grid(True)
 
@@ -106,6 +114,7 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
 
 
         plot_dir = '../parser_output/transit_depths'
+        plt.tight_layout(pad=0)
 
         if not os.path.exists(plot_dir):
             print( 'Directory ' , plot_dir,  " created.")
@@ -122,13 +131,27 @@ def transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp
 
 
 if __name__ == '__main__':
+
+    type = 'MiniNep'
+    met=50
+    CO=0.5
+    case = f'{type}_{int(met)}_{int(CO*100)}'
+
+    plot_title = f'type={type}, met={met}, C/O={CO}'
+
+
+    vul_data = f'{case}.vul'
+
+    plot_name = f'{case}_tdepth'
+
+    spec = 'H2O,CH4,CO,CO2,NH3,H2S,HCN'
+
+    min_pressure_bar = 1e-4
+    max_pressure_bar = 1e-1
+    temp = 300
+    min_wavenumber = 1e3
+    max_wavenumber = 1e4
     use_range = True
-    vul_data = sys.argv[1]
-    spec = sys.argv[2]
-    plot_name = sys.argv[3]
-    min_pressure_bar = float(sys.argv[4])
-    max_pressure_bar = float(sys.argv[5])
-    temp = float(sys.argv[6])
-    min_wavenumber = float(sys.argv[7])
-    max_wavenumber = float(sys.argv[8])
-    transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,min_wavenumber,max_wavenumber,mixing_plot_save=True,plot_save=True,log=True)
+
+
+    transit_depth(vul_data,spec,plot_name,min_pressure_bar,max_pressure_bar,temp,min_wavenumber,max_wavenumber,mixing_plot_save=False,plot_save=True,log=True,plot_title=plot_title)

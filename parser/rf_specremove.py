@@ -21,7 +21,7 @@ temp = 300
 min_wavenumber = 1e3
 max_wavenumber = 1e4
 
-types = ['GasDwarf','Hycean','miniNep']
+types = ['GasDwarf','Hycean','MiniNep']
 mets = [30,50,75,100,125,150,175,200]
 COs = [0.25,0.5,0.75,1.0,1.25,1.5,1.75,2.0]
 
@@ -99,7 +99,7 @@ for sp in spec_list:
     plt.xlabel("Wavelength")
     plt.ylabel("Importance")
     plt.grid(True)
-    plt.tight_layout()
+    plt.tight_layout(pad=0)
     plt.show()
 
     # confusion matrix
@@ -108,7 +108,7 @@ for sp in spec_list:
 
     disp.plot(cmap='Blues')
     plt.title(f'Confusion Matrix; {sp} removed')
-    plt.tight_layout()
+    plt.tight_layout(pad=0)
     plt.show()
 
     del clf

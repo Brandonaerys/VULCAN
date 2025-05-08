@@ -10,7 +10,7 @@ import pandas as pd
 from transit_depth import transit_depth
 
 
-files = ['GasDwarf_DMS_isotherm.vul', 'Hycean_DMS_isotherm.vul', 'MiniNep_DMS_isotherm.vul']
+files = ['GasDwarf_50_50.vul', 'Hycean_50_50.vul', 'MiniNep_50_50.vul']
 labels = ['Gas Dwarf', 'Hycean', 'MiniNep']
 
 spec = 'H2O,CH4,CO,CO2,NH3,H2S,HCN'
@@ -18,7 +18,7 @@ plot_name = 'throwaway'
 min_pressure_bar = 1e-4
 max_pressure_bar = 1e-1
 temp = 300
-min_wavenumber = 2e3
+min_wavenumber = 1e3
 max_wavenumber = 1e4
 
 plt.figure(figsize=(10, 6))
@@ -39,6 +39,8 @@ if not os.path.exists(savepath):
     print( 'Directory ' , savepath,  " created.")
     os.makedirs(savepath)
 
-plt.savefig(f'{savepath}DMS_isotherm')
+plt.tight_layout(pad=0)
+
+plt.savefig(f'{savepath}three_50_50_maxonly')
 
 plt.show()
