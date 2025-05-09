@@ -62,8 +62,15 @@ clf = RandomForestClassifier(n_estimators=200, max_depth=10, min_samples_leaf=5,
 clf.fit(X_train, y_train)
 
 # optional add noise to test data
-gaussian_sd = 10
-X_test = X_test + np.random.normal(0, gaussian_sd, size=X_test.shape)
+# gaussian_sd = 10
+# X_test = X_test + np.random.normal(0, gaussian_sd, size=X_test.shape)
+
+# optional add pre-log noise (note values very unstable)
+# e^(-45) = 2.86e-20
+# e^(-100) = 3.72e-44
+prelog_gaussian_sd = 1e-30
+X_test = np.log(np.maximum(np.exp(X_test) + np.random.normal(0, prelog_gaussian_sd, size=X_test.shape), 1e-50))
+
 
 # eval
 y_pred = clf.predict(X_test)

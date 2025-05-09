@@ -21,7 +21,7 @@ vul_ini = 'output/' # the file to initialize the abundances for ini_mix = 'vulca
 output_dir = 'output/'
 plot_dir = 'plot/'
 movie_dir = 'plot/movie/'
-# out_name =  'Hycean_DMS.vul' # output file name
+out_name =  'MiniNep_DMS_isotherm.vul' # output file name
 
 
 zero_above_conden = True
@@ -51,14 +51,13 @@ use_solar = False # True: using the solar abundance from Table 10. K.Lodders 200
 # e-  0
 # abundances defined via metallicity and C/O ratio as in Cooke 2024
 metallicity = 75
-C_O_ratio = 1.0
+C_O_ratio = 0.5
 
 # define file name using metallicity and C/O ratio
-out_name = f'Hycean_{int(metallicity)}_{int(C_O_ratio*100)}.vul'
+out_name = f'MiniNep_{int(metallicity)}_{int(C_O_ratio*100)}.vul'
 
 O_H = metallicity*10**(8.7826-12)
-# nitrogen depletion from surface ocean
-N_H = 0.01*metallicity*10**(7.9130-12)
+N_H = metallicity*10**(7.9130-12)
 S_H = metallicity*10**(7.12-12)
 He_H = metallicity*10**(8.7826-12)
 
@@ -100,7 +99,7 @@ if use_photo == False and use_ion == True:
 atm_base = 'H2' #Options: 'H2', 'N2', 'O2', 'CO2 -- the bulk gas of the atmosphere: changes the molecular diffsion, thermal diffusion factor, and settling velocity
 rocky = True # for the surface gravity
 nz = 150   # number of vertical layers
-P_b = 1e6  # pressure at the bottom (dyne/cm^2)
+P_b = 1e10  # pressure at the bottom (dyne/cm^2)
 P_t = 1e-5 # pressure at the top (dyne/cm^2)
 use_Kzz = True
 use_moldiff = True
@@ -156,7 +155,6 @@ use_ini_cold_trap = True
 fastchem_met_scale = metallicity
 
 fix_species_from_coldtrap_lev = True
-
 
 # ====== steady state check ======
 st_factor = 0.5
