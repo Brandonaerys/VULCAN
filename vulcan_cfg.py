@@ -51,7 +51,7 @@ use_solar = False # True: using the solar abundance from Table 10. K.Lodders 200
 # e-  0
 # abundances defined via metallicity and C/O ratio as in Cooke 2024
 metallicity = 75
-C_O_ratio = 0.5
+C_O_ratio = 1.0
 
 # define file name using metallicity and C/O ratio
 out_name = f'MiniNep_{int(metallicity)}_{int(C_O_ratio*100)}.vul'
